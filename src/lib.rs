@@ -10,6 +10,9 @@ pub struct Discogs {
     api_endpoint: String,
     useragent: String,
     token: String,
+
+    // Maximum number of API Queries per minute
+    rate_limit: u32,
 }
 
 impl Discogs {
@@ -19,11 +22,44 @@ impl Discogs {
             api_endpoint: "https://api.discogs.com/".to_string(),
             token: token.to_string(),
             useragent: useragent.to_string(),
+            rate_limit: 240,
         }
+    }
+
+    pub fn call(e: Endpoint) -> Endpoint {
+        match e {
+            Endpoint::Releases{..} => println!("releases"),
+            Endpoint::Masters{..} => println!("masters"),
+            Endpoint::Artists{..} => println!("artists"),
+            Endpoint::Labels{..} => println!("labels"),
+            Endpoint::Search{..} => println!("search"),
+        }
+
+        Endpoint::Search
     }
 
 }
 
+
+pub enum Endpoint {
+    Releases { data: Release },
+    Masters,
+    Artists { data: Artist },
+    Labels { data: Label },
+    Search,
+}
+
+impl Endpoint {
+    pub fn to_string(&self) -> &str {
+        match *self {
+            Endpoint::Releases{..} => "releases",
+            Endpoint::Masters{..} => "masters",
+            Endpoint::Artists{..} => "artists",
+            Endpoint::Labels{..} => "labels",
+            Endpoint::Search{..} => "search",
+        }
+    }
+}
 
 //// Data structures
 

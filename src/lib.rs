@@ -1,62 +1,83 @@
 #![feature(proc_macro)]
 
-extern crate curl;
+extern crate hyper;
 extern crate serde_json;
 
 #[macro_use]
 extern crate serde_derive;
 
+use hyper::Client;
+use hyper::header::{Headers, UserAgent};
+
 pub struct Discogs {
     api_endpoint: String,
-    useragent: String,
     token: String,
 
     // Maximum number of API Queries per minute
     rate_limit: u32,
+
+    // hyper client
+    client: Client,
+    // hyper headers
+    header: Headers,
 }
 
 impl Discogs {
 
     pub fn new(token: String, useragent: String) -> Self {
-        Discogs {
-            api_endpoint: "https://api.discogs.com/".to_string(),
+        let mut d = Discogs {
+            api_endpoint: "https://api.discogs.com".to_string(),
             token: token.to_string(),
-            useragent: useragent.to_string(),
             rate_limit: 240,
-        }
+            client: Client::new(),
+            header: Headers::new(),
+        };
+
+        d.header.set(UserAgent(useragent.to_owned()));
+
+        d
     }
 
-    pub fn call(e: Endpoint) -> Endpoint {
-        match e {
-            Endpoint::Releases{..} => println!("releases"),
-            Endpoint::Masters{..} => println!("masters"),
-            Endpoint::Artists{..} => println!("artists"),
-            Endpoint::Labels{..} => println!("labels"),
-            Endpoint::Search{..} => println!("search"),
-        }
+    pub fn call(mut self, e: Endpoint) -> Endpoint {
 
-        Endpoint::Search
+        Endpoint::Masters
     }
+
+    pub fn get_api_url(self, e: Endpoint) -> String {
+        format!("{}/{}", self.api_endpoint, e.to_string())
+    }
+
+    // pub fn set_useragent(mut self, useragent: String) -> Self {
+    //     // self.curl.useragent(&useragent[..]).unwrap();
+    //     self
+    // }
 
 }
 
 
 pub enum Endpoint {
-    Releases { data: Release },
+    Releases {
+        data: Release,
+        // id: u32
+    },
     Masters,
-    Artists { data: Artist },
+    Artists {
+        data: Artist,
+        artist_id: u32,
+    },
     Labels { data: Label },
     Search,
 }
 
 impl Endpoint {
-    pub fn to_string(&self) -> &str {
+    pub fn to_string(&self) -> String {
         match *self {
-            Endpoint::Releases{..} => "releases",
-            Endpoint::Masters{..} => "masters",
-            Endpoint::Artists{..} => "artists",
-            Endpoint::Labels{..} => "labels",
-            Endpoint::Search{..} => "search",
+            Endpoint::Releases{..} => "releases".to_string(),
+            Endpoint::Masters{..} => "masters".to_string(),
+            Endpoint::Artists{artist_id: id, ..} =>
+                format!("{}/{}", "artists", id),
+            Endpoint::Labels{..} => "labels".to_string(),
+            Endpoint::Search{..} => "search".to_string(),
         }
     }
 }
@@ -202,5 +223,9 @@ pub struct Release {
 mod tests {
     #[test]
     fn it_works() {
+        use Endpoint;
+
+        let x: Endpoint = Endpoint::Masters;
+        println!("{:?}", x.to_string());
     }
 }

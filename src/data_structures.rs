@@ -104,7 +104,7 @@ pub struct Release {
     pub title: String,
     pub id: u32,
     pub artists: Vec<Artist>,
-    pub data_quality: String,
+    pub data_quality: Option<DataQuality>,
     pub thumb: String,
     pub community: Community,
     pub companies: Vec<Company>,
@@ -144,4 +144,26 @@ pub enum DataQuality {
     Correct,
     #[serde(rename="Needs Vote")]
     NeedsVote,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Master {
+    pub id: u32,
+    pub resource_url: String,
+    pub title: Option<String>,
+    pub year: Option<u32>,
+    pub images: Option<Vec<Image>>,
+    pub tracklist: Option<Vec<Track>>,
+    pub uri: Option<String>,
+    pub genres: Option<Vec<String>>,
+    pub artists: Option<Vec<Artist>>,
+    pub notes: Option<String>,
+    pub videos: Option<Vec<Video>>,
+    pub data_quality: Option<DataQuality>,
+    pub num_for_sale: Option<u32>,
+    pub styles: Option<Vec<String>>,
+    pub versions_url: Option<String>,
+    pub main_release: Option<String>,
+    pub main_release_url: Option<String>,
+    pub lowest_price: Option<f64>,
 }

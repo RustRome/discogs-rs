@@ -31,12 +31,13 @@ pub struct ReleaseFormat {
 
 #[derive(Serialize, Deserialize)]
 pub struct Image {
-    pub height: u32,
     pub resource_url: String,
+    // TODO: do a enum type
     #[serde(rename = "type")]
     pub image_type: String,
     pub uri: String,
     pub uri150: String,
+    pub height: u32,
     pub width: u32,
 }
 
@@ -67,6 +68,7 @@ pub struct Track {
     pub position: String,
     pub title: String,
     pub type_: String,
+    pub extraartists: Option<Vec<Artist>>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -150,6 +152,7 @@ pub enum DataQuality {
 pub struct Master {
     pub id: u32,
     pub resource_url: String,
+    pub main_release: u32,
     pub title: Option<String>,
     pub year: Option<u32>,
     pub images: Option<Vec<Image>>,
@@ -163,7 +166,6 @@ pub struct Master {
     pub num_for_sale: Option<u32>,
     pub styles: Option<Vec<String>>,
     pub versions_url: Option<String>,
-    pub main_release: Option<String>,
     pub main_release_url: Option<String>,
     pub lowest_price: Option<f64>,
 }

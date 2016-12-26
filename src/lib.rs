@@ -7,10 +7,12 @@ extern crate serde_json;
 extern crate serde_derive;
 
 mod label;
+mod master;
 mod pagination;
 mod data_structures;
 
 use label::LabelQuery;
+use master::MasterQuery;
 use hyper::Client;
 use hyper::client::Response;
 use hyper::header::{Headers, UserAgent};
@@ -42,13 +44,13 @@ impl Discogs {
         }
     }
 
-    pub fn query(&self, url: String) -> Response {
+    pub fn query(&self, url: String) -> Option<Response> {
         // let final_url = format!("{}&key={}&secret={}", url, self.key, self.secret);
         self.client
             .get(&url[..])
             .header(UserAgent(self.user_agent.clone()))
             .send()
-            .unwrap()
+            .ok()
     }
 
     // pub fn call(&self, e: &mut Endpoint) -> Self {

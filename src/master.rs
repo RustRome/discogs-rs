@@ -1,30 +1,34 @@
 use pagination::Pagination;
-use data_structures::Label;
+use data_structures::Master;
 use hyper::status::StatusCode;
 use Discogs;
 use serde_json;
 use std::io::Read;
 
-const API_ENDPOINT: &'static str = "/labels";
+const API_ENDPOINT: &'static str = "/masters";
 
-pub struct LabelQuery<'a> {
+pub struct MasterQuery<'a> {
     discogs: &'a Discogs,
     id: u32,
     pagination: Option<Pagination>,
 }
 
-impl<'a> LabelQuery<'a> {
+impl<'a> MasterQuery<'a> {
     pub fn new(d: &'a Discogs) -> Self {
-        LabelQuery {
+        MasterQuery {
             discogs: d,
             id: 0,
             pagination: None,
         }
     }
 
-    pub fn call(&self) -> Option<Label> {
+    pub fn call(&self) -> Option<Master> {
         let mut r = self.discogs
-            .query(format!("https://api.discogs.com/labels/{}", self.id).to_owned());
+            .query(format!("https://api.discogs.com/masters/{}", self.id).to_owned());
+
+        if r.is_none() {
+            return None;
+        }
 
         if let Some(mut json) = r {
             if json.status != StatusCode::Ok {

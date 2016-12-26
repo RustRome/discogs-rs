@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 /// / Data structures
 #[derive(Serialize, Deserialize)]
 pub struct Community {
@@ -92,13 +93,25 @@ pub struct Company {
 
 #[derive(Serialize, Deserialize)]
 pub struct Artist {
-    pub anv: String,
     pub id: u32,
-    pub join: String,
     pub name: String,
     pub resource_url: String,
-    pub role: String,
-    pub tracks: String,
+    pub tracks: Option<String>,
+    pub uri: Option<String>,
+    pub releases_url: Option<String>,
+    pub aliases: Option<Vec<Artist>>,
+    pub join: Option<String>,
+    pub role: Option<String>,
+    // 'groups',
+    pub anv: Option<String>,
+    pub members: Option<Vec<Artist>>,
+    pub active: Option<bool>,
+    pub namevariations: Option<Vec<String>>,
+    pub urls: Option<Vec<String>>,
+    pub images: Option<Vec<Image>>,
+    pub profile: Option<String>,
+    pub data_quality: Option<DataQuality>,
+    pub realname: Option<String>,
 }
 
 #[derive(Serialize, Deserialize)]

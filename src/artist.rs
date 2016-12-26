@@ -1,32 +1,32 @@
-// TODO: Implement versions api for masters
+// TODO: Implement versions api for artists
 
 use pagination::Pagination;
-use data_structures::Master;
+use data_structures::Artist;
 use hyper::status::StatusCode;
 use Discogs;
 use serde_json;
 use std::io::Read;
 
-const API_ENDPOINT: &'static str = "/masters";
+const API_ENDPOINT: &'static str = "/artists";
 
-pub struct MasterQuery<'a> {
+pub struct ArtistQuery<'a> {
     discogs: &'a Discogs,
     id: u32,
     pagination: Option<Pagination>,
 }
 
-impl<'a> MasterQuery<'a> {
+impl<'a> ArtistQuery<'a> {
     pub fn new(d: &'a Discogs) -> Self {
-        MasterQuery {
+        ArtistQuery {
             discogs: d,
             id: 0,
             pagination: None,
         }
     }
 
-    pub fn call(&self) -> Option<Master> {
+    pub fn call(&self) -> Option<Artist> {
         let mut r = self.discogs
-            .query(format!("https://api.discogs.com/masters/{}", self.id).to_owned());
+            .query(format!("https://api.discogs.com/artists/{}", self.id).to_owned());
 
         if r.is_none() {
             return None;

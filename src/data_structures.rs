@@ -6,7 +6,7 @@ pub struct Community {
     pub data_quality: String,
     pub have: u32,
     pub rating: Rating,
-    pub status: String,
+    pub status: Status,
     pub submitter: Contributor,
     pub want: u32,
 }
@@ -118,40 +118,43 @@ pub struct Artist {
 pub struct Release {
     pub title: String,
     pub id: u32,
-    pub artists: Vec<Artist>,
-    pub data_quality: Option<DataQuality>,
-    pub thumb: String,
-    pub community: Community,
-    pub companies: Vec<Company>,
-    pub country: String,
-    pub date_added: String,
-    pub date_changed: String,
-    pub estimated_weight: u32,
-    pub extraartists: Vec<Artist>,
-    pub format_quantity: u32,
-    pub formats: Vec<ReleaseFormat>,
-    pub genres: Vec<String>,
-    pub identifiers: Vec<Identifier>,
-    pub images: Vec<Image>,
-    pub labels: Vec<Label>,
-    pub lowest_price: f64,
-    pub master_id: u32,
-    pub master_url: String,
-    pub notes: String,
-    pub num_for_sale: u32,
     pub released: String,
     pub released_formatted: String,
     pub resource_url: String,
-
-    // series: None,//[], ///////////////////////////////////////////////////////////
-    pub series: Vec<String>,
-
-    pub status: String,
-    pub styles: Vec<String>,
-    pub tracklist: Vec<Track>,
+    pub date_added: String,
+    pub date_changed: String,
     pub uri: String,
-    pub videos: Vec<Video>,
     pub year: u32,
+    pub artists: Vec<Artist>,
+    pub status: Status,
+
+    pub data_quality: Option<DataQuality>,
+    pub thumb: Option<String>,
+    pub community: Option<Community>,
+    pub companies: Option<Vec<Company>>,
+    pub country: Option<String>,
+    pub estimated_weight: Option<u32>,
+    pub extraartists: Option<Vec<Artist>>,
+    pub format_quantity: Option<u32>,
+    pub formats: Option<Vec<ReleaseFormat>>,
+    pub genres: Option<Vec<String>>,
+    pub identifiers: Option<Vec<Identifier>>,
+    pub images: Option<Vec<Image>>,
+    pub labels: Option<Vec<Label>>,
+    pub lowest_price: Option<f64>,
+    pub master_id: Option<u32>,
+    pub master_url: Option<String>,
+    pub notes: Option<String>,
+    pub num_for_sale: Option<u32>,
+    pub series: Option<Vec<Label>>,
+    pub styles: Option<Vec<String>>,
+    pub tracklist: Option<Vec<Track>>,
+    pub videos: Option<Vec<Video>>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub enum Status {
+    Accepted,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -159,6 +162,8 @@ pub enum DataQuality {
     Correct,
     #[serde(rename="Needs Vote")]
     NeedsVote,
+    #[serde(rename="Complete and Correct")]
+    CompleteAndCorrect,
 }
 
 #[derive(Serialize, Deserialize)]

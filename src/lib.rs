@@ -9,12 +9,14 @@ extern crate serde_derive;
 mod label;
 mod master;
 mod artist;
+mod release;
 mod pagination;
 mod data_structures;
 
 use label::LabelQuery;
 use master::MasterQuery;
 use artist::ArtistQuery;
+use release::ReleaseQuery;
 use hyper::Client;
 use hyper::client::Response;
 use hyper::header::{Headers, UserAgent};
@@ -75,17 +77,17 @@ impl Discogs {
 #[cfg(test)]
 mod tests {
     use Discogs;
-    use artist::ArtistQuery;
+    use release::ReleaseQuery;
     #[test]
     fn discogs_inst() {
         let l: Discogs = Discogs::new("key".to_owned(),
                                       "secret".to_owned(),
                                       "useragent".to_owned());
 
-        let mut at: ArtistQuery = ArtistQuery::new(&l);
-        for i in 1006..1008 {
+        let mut at: ReleaseQuery = ReleaseQuery::new(&l);
+        for i in 950..1020 {
             print!("{}: ", i);
-            if let Some(artist) = at.id(i).call() {
+            if let Some(r) = at.id(i).call() {
                 println!("OK");
             } else {
                 println!("ERR");

@@ -6,6 +6,7 @@ description = "A Library to consume Discogs API"
 keywords = ["discogs", "api", "client"]
 license = "GPL-3.0+"
 repository = "https://github.com/afonso360/discogs-rs"
+readme = "README.md"
 
 [dependencies]
 hyper = "0.9.13"

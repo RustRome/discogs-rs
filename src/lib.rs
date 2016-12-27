@@ -25,8 +25,8 @@ use std::io::Result;
 
 pub struct Discogs {
     api_endpoint: String,
-    key: String,
-    secret: String,
+    key: Option<String>,
+    secret: Option<String>,
     user_agent: String,
 
     // Maximum number of API Queries per minute
@@ -37,15 +37,35 @@ pub struct Discogs {
 }
 
 impl Discogs {
-    pub fn new(key: String, secret: String, user_agent: String) -> Self {
+    pub fn new(user_agent: String) -> Self {
         Discogs {
             api_endpoint: "https://api.discogs.com".to_string(),
-            key: key,
-            secret: secret,
+            key: None,
+            secret: None,
             user_agent: user_agent,
             rate_limit: 240,
             client: Client::new(),
         }
+    }
+
+    pub fn key(&mut self, key: String) -> &mut Self {
+        self.key = Some(key);
+        self
+    }
+
+    pub fn secret(&mut self, secret: String) -> &mut Self {
+        self.secret = Some(secret);
+        self
+    }
+
+    pub fn rate_limit(&mut self, rate_limit: u32) -> &mut Self {
+        self.rate_limit = rate_limit;
+        self
+    }
+
+    pub fn api_endpoint(&mut self, api_endpoint: String) -> &mut Self {
+        self.api_endpoint = api_endpoint;
+        self
     }
 
     pub fn query(&self, url: String) -> Option<Response> {
@@ -80,9 +100,7 @@ mod tests {
     use release::ReleaseQuery;
     #[test]
     fn discogs_inst() {
-        let l: Discogs = Discogs::new("key".to_owned(),
-                                      "secret".to_owned(),
-                                      "useragent".to_owned());
+        let l: Discogs = Discogs::new("useragent".to_owned());
 
         let mut at: ReleaseQuery = ReleaseQuery::new(&l);
         for i in 950..1020 {

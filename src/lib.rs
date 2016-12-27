@@ -56,6 +56,22 @@ impl Discogs {
             .send()
             .ok()
     }
+
+    pub fn label(&self) -> LabelQuery {
+        LabelQuery::new(self)
+    }
+
+    pub fn master(&self) -> MasterQuery {
+        MasterQuery::new(self)
+    }
+
+    pub fn artist(&self) -> ArtistQuery {
+        ArtistQuery::new(self)
+    }
+
+    pub fn release(&self) -> ReleaseQuery {
+        ReleaseQuery::new(self)
+    }
 }
 
 #[cfg(test)]

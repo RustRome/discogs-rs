@@ -19,9 +19,7 @@ use artist::ArtistQuery;
 use release::ReleaseQuery;
 use hyper::Client;
 use hyper::client::Response;
-use hyper::header::{Headers, UserAgent};
-use hyper::client::IntoUrl;
-use std::io::Result;
+use hyper::header::UserAgent;
 
 pub struct Discogs {
     api_endpoint: String,

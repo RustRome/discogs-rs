@@ -23,8 +23,8 @@ impl<'a> ReleaseQuery<'a> {
     }
 
     pub fn call(&self) -> Option<Release> {
-        let mut r = self.discogs
-            .query(format!("https://api.discogs.com/releases/{}", self.id).to_owned());
+        let r = self.discogs
+            .query(format!("{}{}/{}", self.discogs.api_endpoint, API_ENDPOINT, self.id).to_owned());
 
         if r.is_none() {
             return None;
@@ -37,9 +37,15 @@ impl<'a> ReleaseQuery<'a> {
 
             let mut s: String = "".to_owned();
 
-            json.read_to_string(&mut s);
-
-            return serde_json::from_str(&s[..]).unwrap();
+            if let Ok(sz) = json.read_to_string(&mut s) {
+                if sz > 0 {
+                    return serde_json::from_str(&s[..]).ok();
+                } else {
+                    return None;
+                }
+            } else {
+                return None;
+            }
         }
 
         None

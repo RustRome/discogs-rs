@@ -56,22 +56,6 @@ impl Discogs {
             .send()
             .ok()
     }
-
-    // pub fn call(&self, e: &mut Endpoint) -> Self {
-    // let url: String = self.get_api_url(*e);
-    // let res = self.client.get(&url[..]).send().unwrap();
-    //
-    // e.data() = serde_json::from_str(&res).unwrap();
-    // }
-    //
-    // pub fn get_api_url(&self, e: Endpoint) -> String {
-    // format!("{}/{}", self.api_endpoint, e.to_string())
-    // }
-    //
-    // pub fn set_useragent(mut self, useragent: String) -> Self {
-    //     // self.curl.useragent(&useragent[..]).unwrap();
-    //     self
-    // }
 }
 
 #[cfg(test)]

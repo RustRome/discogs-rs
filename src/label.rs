@@ -19,6 +19,7 @@ use hyper::status::StatusCode;
 use Discogs;
 use serde_json;
 use std::io::Read;
+use super::Queryable;
 
 const API_ENDPOINT: &'static str = "/labels";
 

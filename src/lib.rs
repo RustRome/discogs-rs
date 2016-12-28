@@ -23,19 +23,24 @@ extern crate serde_json;
 extern crate serde_derive;
 
 mod label;
-mod master;
-mod artist;
-mod release;
+// mod master;
+// mod artist;
+// mod release;
 mod pagination;
 mod data_structures;
 
 use label::LabelQuery;
-use master::MasterQuery;
-use artist::ArtistQuery;
-use release::ReleaseQuery;
+// use master::MasterQuery;
+// use artist::ArtistQuery;
+// use release::ReleaseQuery;
 use hyper::Client;
 use hyper::client::Response;
 use hyper::header::UserAgent;
+
+trait Queryable {
+    fn update(&mut self, d: &Discogs);
+    fn get_address(&self) -> String;
+}
 
 pub struct Discogs {
     api_endpoint: String,
@@ -91,39 +96,63 @@ impl Discogs {
             .ok()
     }
 
-    pub fn label(&self) -> LabelQuery {
-        LabelQuery::new(self)
-    }
-
-    pub fn master(&self) -> MasterQuery {
-        MasterQuery::new(self)
-    }
-
-    pub fn artist(&self) -> ArtistQuery {
-        ArtistQuery::new(self)
-    }
-
-    pub fn release(&self) -> ReleaseQuery {
-        ReleaseQuery::new(self)
-    }
+    //    pub fn label(&self) -> LabelQuery {
+    //        LabelQuery::new(self)
+    //    }
+    //
+    //    pub fn master(&self) -> MasterQuery {
+    //        MasterQuery::new(self)
+    //    }
+    //
+    //    pub fn artist(&self) -> ArtistQuery {
+    //        ArtistQuery::new(self)
+    //    }
+    //
+    //    pub fn release(&self) -> ReleaseQuery {
+    //        ReleaseQuery::new(self)
+    //    }
 }
 
 #[cfg(test)]
 mod tests {
     use Discogs;
-    use release::ReleaseQuery;
+    //    use release::ReleaseQuery;
+    use data_structures::Master;
+    use Queryable;
     #[test]
     fn discogs_inst() {
         let l: Discogs = Discogs::new("useragent".to_owned());
 
-        let mut at: ReleaseQuery = ReleaseQuery::new(&l);
-        for i in 950..1020 {
-            print!("{}: ", i);
-            if let Some(r) = at.id(i).call() {
-                println!("OK");
-            } else {
-                println!("ERR");
-            }
-        }
+        let mut at = Master {
+            id: 1016,
+            resource_url: "https://api.discogs.com/masters/1016".to_owned(),
+            main_release: 36287310,
+            title: None,
+            year: None,
+            images: None,
+            tracklist: None,
+            uri: None,
+            genres: None,
+            artists: None,
+            notes: None,
+            videos: None,
+            data_quality: None,
+            num_for_sale: None,
+            styles: None,
+            versions_url: None,
+            main_release_url: None,
+            lowest_price: None,
+        };
+        println!("{:?}", at.main_release);
+        at.update(&l);
+        println!("{:?}", at.main_release);
+        //        for i in 950..1020 {
+        //            print!("{}: ", i);
+        //            if let Some(r) = at.id(i).call() {
+        //                println!("OK");
+        //            } else {
+        //                println!("ERR");
+        //            }
+        //        }
     }
 }

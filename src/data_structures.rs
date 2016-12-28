@@ -15,6 +15,15 @@
 
 #![allow(dead_code)]
 /// / Data structures
+
+use Discogs;
+use Queryable;
+use hyper::status::StatusCode;
+use serde_json;
+use serde_json::from_str;
+use std::io::Read;
+use hyper::client::Response;
+
 #[derive(Serialize, Deserialize)]
 pub struct Community {
     pub contributors: Vec<Contributor>,
@@ -201,4 +210,29 @@ pub struct Master {
     pub versions_url: Option<String>,
     pub main_release_url: Option<String>,
     pub lowest_price: Option<f64>,
+}
+
+impl Queryable for Master {
+    fn update(&mut self, d: &Discogs) {
+        let mut json = d.query(self.get_address()).unwrap();
+
+        if json.status != StatusCode::Ok {
+            return;
+        }
+
+
+        let mut s: String = "".to_owned();
+
+        if let Ok(sz) = json.read_to_string(&mut s) {
+            if sz <= 0 {
+                return;
+            }
+            *self = serde_json::from_str(&s[..]).unwrap();
+        }
+    }
+
+    fn get_address(&self) -> String {
+        // format!("{}{}/{}", self.discogs.api_endpoint, API_ENDPOINT, self.id).to_owned();
+        self.resource_url.clone()
+    }
 }

@@ -24,36 +24,9 @@ use serde_json::from_str;
 use std::io::Read;
 use hyper::client::Response;
 
-#[derive(Serialize, Deserialize)]
-pub struct Community {
-    pub contributors: Vec<Contributor>,
-    pub data_quality: String,
-    pub have: u32,
-    pub rating: Rating,
-    pub status: Status,
-    pub submitter: Contributor,
-    pub want: u32,
-}
 
-#[derive(Serialize, Deserialize)]
-pub struct Rating {
-    pub average: f32,
-    pub count: u32,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Contributor {
-    pub resource_url: String,
-    pub username: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct ReleaseFormat {
-    pub descriptions: Vec<String>,
-    pub name: String,
-    pub qty: String,
-}
-
+// Fetchable data structures
+// Resource url only
 #[derive(Serialize, Deserialize)]
 pub struct Image {
     pub resource_url: String,
@@ -67,11 +40,12 @@ pub struct Image {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Identifier {
-    #[serde(rename = "type")]
-    pub identifier_type: String,
-    pub value: String,
+pub struct Contributor {
+    pub resource_url: String,
+    pub username: String,
 }
+
+// Resource url and id
 
 #[derive(Serialize, Deserialize)]
 pub struct Label {
@@ -85,24 +59,6 @@ pub struct Label {
     pub urls: Option<Vec<String>>,
     pub data_quality: Option<DataQuality>,
     pub sublabels: Option<Vec<Label>>,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Track {
-    pub duration: String,
-    pub position: String,
-    pub title: String,
-    pub type_: String,
-    pub extraartists: Option<Vec<Artist>>,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct Video {
-    pub description: String,
-    pub duration: u32,
-    pub embed: bool,
-    pub title: String,
-    pub uri: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -176,25 +132,14 @@ pub struct Release {
     pub videos: Option<Vec<Video>>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub enum Status {
-    Accepted,
-}
-
-#[derive(Serialize, Deserialize)]
-pub enum DataQuality {
-    Correct,
-    #[serde(rename="Needs Vote")]
-    NeedsVote,
-    #[serde(rename="Complete and Correct")]
-    CompleteAndCorrect,
-}
 
 #[derive(Serialize, Deserialize)]
 pub struct Master {
     pub id: u32,
-    pub resource_url: String,
-    pub main_release: u32,
+    pub resource_url: Option<String>,
+    pub main_release: Option<u32>,
+    pub main_release_url: Option<String>,
+
     pub title: Option<String>,
     pub year: Option<u32>,
     pub images: Option<Vec<Image>>,
@@ -208,7 +153,6 @@ pub struct Master {
     pub num_for_sale: Option<u32>,
     pub styles: Option<Vec<String>>,
     pub versions_url: Option<String>,
-    pub main_release_url: Option<String>,
     pub lowest_price: Option<f64>,
 }
 
@@ -231,8 +175,79 @@ impl Queryable for Master {
         }
     }
 
-    fn get_address(&self) -> String {
-        // format!("{}{}/{}", self.discogs.api_endpoint, API_ENDPOINT, self.id).to_owned();
-        self.resource_url.clone()
+    fn get_query_source(&self) -> QuerySource {
+        if let Some(url) = self.resource_url {
+            return QuerySource::Url(url);
+        }
+
+        QuerySource::Id {}
     }
+}
+
+// Plain data structures
+
+#[derive(Serialize, Deserialize)]
+pub struct Community {
+    pub contributors: Vec<Contributor>,
+    pub data_quality: String,
+    pub have: u32,
+    pub rating: Rating,
+    pub status: Status,
+    pub submitter: Contributor,
+    pub want: u32,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Rating {
+    pub average: f32,
+    pub count: u32,
+}
+
+
+#[derive(Serialize, Deserialize)]
+pub struct ReleaseFormat {
+    pub descriptions: Vec<String>,
+    pub name: String,
+    pub qty: String,
+}
+
+
+#[derive(Serialize, Deserialize)]
+pub struct Identifier {
+    #[serde(rename = "type")]
+    pub identifier_type: String,
+    pub value: String,
+}
+
+
+#[derive(Serialize, Deserialize)]
+pub struct Track {
+    pub duration: String,
+    pub position: String,
+    pub title: String,
+    pub type_: String,
+    pub extraartists: Option<Vec<Artist>>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Video {
+    pub description: String,
+    pub duration: u32,
+    pub embed: bool,
+    pub title: String,
+    pub uri: String,
+}
+
+#[derive(Serialize, Deserialize)]
+pub enum Status {
+    Accepted,
+}
+
+#[derive(Serialize, Deserialize)]
+pub enum DataQuality {
+    Correct,
+    #[serde(rename="Needs Vote")]
+    NeedsVote,
+    #[serde(rename="Complete and Correct")]
+    CompleteAndCorrect,
 }

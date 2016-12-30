@@ -18,28 +18,59 @@
 
 extern crate hyper;
 extern crate serde_json;
+extern crate serde;
 
 #[macro_use]
 extern crate serde_derive;
 
-mod label;
-// mod master;
-// mod artist;
-// mod release;
 mod pagination;
-mod data_structures;
+mod data_structures {
+    pub mod master;
+    pub mod artist;
+    pub mod company;
+    pub mod contributor;
+    pub mod image;
+    pub mod label;
+    pub mod others;
+    pub mod release;
+}
 
-use label::LabelQuery;
-// use master::MasterQuery;
-// use artist::ArtistQuery;
-// use release::ReleaseQuery;
 use hyper::Client;
 use hyper::client::Response;
 use hyper::header::UserAgent;
+use std::io::Read;
+use hyper::status::StatusCode;
+use serde::Serialize;
+use serde::Deserialize;
 
-trait Queryable {
-    fn update(&mut self, d: &Discogs);
-    fn get_address(&self) -> String;
+pub enum QuerySource {
+    Id {
+        api_endpoint: String,
+        endpoint: String,
+        id: u32,
+    },
+    Url { url: String },
+}
+
+impl QuerySource {
+    // TODO: there is probably a better way to do this without the clone
+    fn get_address(&self) -> String {
+        match self {
+            &QuerySource::Id { ref api_endpoint, ref endpoint, ref id } => {
+                format!("{}/{}/{}", api_endpoint, endpoint, id)
+            }
+            &QuerySource::Url { ref url } => url.clone(),
+        }
+    }
+}
+
+trait Queryable: Sized + Serialize + Deserialize {
+    fn query_source(&self) -> QuerySource;
+
+    fn update(&mut self, d: &Discogs) {
+        let json: String = d.query(self.query_source()).unwrap();
+        *self = serde_json::from_str(&json[..]).unwrap();
+    }
 }
 
 pub struct Discogs {
@@ -67,83 +98,71 @@ impl Discogs {
         }
     }
 
-    pub fn key(&mut self, key: String) -> &mut Self {
-        self.key = Some(key);
-        self
-    }
-
-    pub fn secret(&mut self, secret: String) -> &mut Self {
-        self.secret = Some(secret);
-        self
-    }
-
-    pub fn rate_limit(&mut self, rate_limit: u32) -> &mut Self {
-        self.rate_limit = rate_limit;
-        self
-    }
-
-    pub fn api_endpoint(&mut self, api_endpoint: String) -> &mut Self {
-        self.api_endpoint = api_endpoint;
-        self
-    }
-
-    pub fn query(&self, url: String) -> Option<Response> {
+    pub fn query_url(&self, url: String) -> Option<String> {
         // let final_url = format!("{}&key={}&secret={}", url, self.key, self.secret);
-        self.client
+        let response = self.client
             .get(&url[..])
             .header(UserAgent(self.user_agent.clone()))
             .send()
-            .ok()
+            .ok();
+
+        if let Some(mut json) = response {
+
+            if json.status != StatusCode::Ok {
+                return None;
+            }
+
+            let mut s: String = "".to_owned();
+            if let Ok(sz) = json.read_to_string(&mut s) {
+                if sz <= 0 {
+                    return None;
+                }
+                return Some(s);
+            }
+        }
+        return None;
     }
 
-    //    pub fn label(&self) -> LabelQuery {
-    //        LabelQuery::new(self)
-    //    }
-    //
-    //    pub fn master(&self) -> MasterQuery {
-    //        MasterQuery::new(self)
-    //    }
-    //
-    //    pub fn artist(&self) -> ArtistQuery {
-    //        ArtistQuery::new(self)
-    //    }
-    //
-    //    pub fn release(&self) -> ReleaseQuery {
-    //        ReleaseQuery::new(self)
-    //    }
+    pub fn query(&self, qs: QuerySource) -> Option<String> {
+        // let final_url = format!("{}&key={}&secret={}", url, self.key, self.secret);
+        let response = self.client
+            .get(&qs.get_address()[..])
+            .header(UserAgent(self.user_agent.clone()))
+            .send()
+            .ok();
+
+        if let Some(mut json) = response {
+
+            if json.status != StatusCode::Ok {
+                return None;
+            }
+
+            let mut s: String = "".to_owned();
+            if let Ok(sz) = json.read_to_string(&mut s) {
+                if sz <= 0 {
+                    return None;
+                }
+                return Some(s);
+            }
+        }
+        return None;
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use Discogs;
     //    use release::ReleaseQuery;
-    use data_structures::Master;
+    use data_structures::master::Master;
+    use data_structures::artist::Artist;
     use Queryable;
     #[test]
     fn discogs_inst() {
         let l: Discogs = Discogs::new("useragent".to_owned());
+        let mut at = Master::new(1016, &l);
+        let mut i = Artist::new(1020, &l);
 
-        let mut at = Master {
-            id: 1016,
-            resource_url: "https://api.discogs.com/masters/1016".to_owned(),
-            main_release: 36287310,
-            title: None,
-            year: None,
-            images: None,
-            tracklist: None,
-            uri: None,
-            genres: None,
-            artists: None,
-            notes: None,
-            videos: None,
-            data_quality: None,
-            num_for_sale: None,
-            styles: None,
-            versions_url: None,
-            main_release_url: None,
-            lowest_price: None,
-        };
-        println!("{:?}", at.main_release);
+        println!("{:?}", i);
         at.update(&l);
         println!("{:?}", at.main_release);
         //        for i in 950..1020 {

@@ -24,7 +24,7 @@ extern crate serde;
 extern crate serde_derive;
 
 mod pagination;
-mod data_structures {
+pub mod data_structures {
     pub mod master;
     pub mod artist;
     pub mod company;

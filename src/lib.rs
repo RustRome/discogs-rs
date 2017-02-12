@@ -124,28 +124,7 @@ impl Discogs {
     }
 
     pub fn query(&self, qs: QuerySource) -> Option<String> {
-        // let final_url = format!("{}&key={}&secret={}", url, self.key, self.secret);
-        let response = self.client
-            .get(&qs.get_address()[..])
-            .header(UserAgent(self.user_agent.clone()))
-            .send()
-            .ok();
-
-        if let Some(mut json) = response {
-
-            if json.status != StatusCode::Ok {
-                return None;
-            }
-
-            let mut s: String = "".to_owned();
-            if let Ok(sz) = json.read_to_string(&mut s) {
-                if sz <= 0 {
-                    return None;
-                }
-                return Some(s);
-            }
-        }
-        return None;
+        self.query_url(qs.get_address())
     }
 }
 

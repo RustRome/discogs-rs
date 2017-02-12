@@ -73,6 +73,10 @@ trait Queryable: Sized + Serialize + Deserialize {
     }
 }
 
+trait DiscogsItem: Sized {
+    fn id(&self) -> u32;
+}
+
 pub struct Discogs {
     api_endpoint: String,
     key: Option<String>,

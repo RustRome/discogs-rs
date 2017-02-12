@@ -16,18 +16,10 @@
 use Discogs;
 use Queryable;
 use serde_json;
-use serde_json::from_str;
-use std::io::Read;
-use hyper::client::Response;
 use QuerySource;
-use serde::Serialize;
-use serde::Deserialize;
 use data_structures::others::*;
-use data_structures::label::Label;
 use data_structures::image::Image;
-use data_structures::company::Company;
 use data_structures::artist::Artist;
-use data_structures::contributor::Contributor;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Master {

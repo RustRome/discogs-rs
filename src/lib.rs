@@ -36,7 +36,6 @@ pub mod data_structures {
 }
 
 use hyper::Client;
-use hyper::client::Response;
 use hyper::header::UserAgent;
 use std::io::Read;
 use hyper::status::StatusCode;

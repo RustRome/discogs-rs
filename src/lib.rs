@@ -87,6 +87,7 @@ impl Discogs {
         self.key = Some(key.to_owned());
         self
     }
+
     /// Sets the discogs api client secret
     ///
     /// # Examples
@@ -101,6 +102,20 @@ impl Discogs {
     pub fn secret(&mut self, secret: &str) -> &mut Self {
         self.secret = Some(secret.to_owned());
         self
+    }
+
+    /// Sets the discogs api client secret
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::Discogs;
+    ///
+    /// let query = Discogs::new(env!("DISCOGS_USER_AGENT")).query();
+    ///
+    /// ```
+    pub fn query(&mut self) -> QueryBuilder {
+        QueryBuilder::new(self)
     }
 }
 
@@ -124,7 +139,6 @@ mod tests {
         assert_eq!(client.key, Some(env!("DISCOGS_CLIENT_KEY").to_owned()));
     }
 
-
     #[test]
     fn secret_test() {
         let mut client = Discogs::new(env!("DISCOGS_USER_AGENT"));
@@ -132,7 +146,6 @@ mod tests {
 
         assert_eq!(client.user_agent, env!("DISCOGS_USER_AGENT"));
         assert_eq!(client.secret, Some(env!("DISCOGS_CLIENT_SECRET").to_owned()));
-
     }
 }
 

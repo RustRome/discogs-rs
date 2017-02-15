@@ -19,7 +19,6 @@ use std::io::Read;
 use hyper::status::StatusCode;
 use serde::Serialize;
 use serde::Deserialize;
-use query::query_builder::QueryBuilder;
 use query::query_type::QueryType;
 
 pub struct Discogs {
@@ -89,25 +88,6 @@ impl Discogs {
         self
     }
 
-    /// Returns a `QueryBuilder` to be used for querys
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use discogs::Discogs;
-    ///
-    /// let query = Discogs::new(env!("DISCOGS_USER_AGENT")).query();
-    ///
-    /// ```
-    pub fn query(&self) -> QueryBuilder {
-        let mut qb = QueryBuilder::new(self.api_endpoint.clone(),
-                                       self.user_agent.clone());
-
-        qb.key(self.key.clone())
-            .secret(self.secret.clone());
-
-        qb
-    }
 }
 
 #[cfg(test)]

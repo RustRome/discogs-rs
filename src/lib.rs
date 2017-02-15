@@ -23,6 +23,7 @@ extern crate serde;
 #[macro_use]
 extern crate serde_derive;
 
+mod query_builder;
 mod pagination;
 pub mod data_structures {
     pub mod master;
@@ -42,40 +43,6 @@ use hyper::status::StatusCode;
 use serde::Serialize;
 use serde::Deserialize;
 
-pub enum QuerySource {
-    Id {
-        api_endpoint: String,
-        endpoint: String,
-        id: u32,
-    },
-    Url { url: String },
-}
-
-impl QuerySource {
-    // TODO: there is probably a better way to do this without the clone
-    fn get_address(&self) -> String {
-        match self {
-            &QuerySource::Id { ref api_endpoint, ref endpoint, ref id } => {
-                format!("{}/{}/{}", api_endpoint, endpoint, id)
-            }
-            &QuerySource::Url { ref url } => url.clone(),
-        }
-    }
-}
-
-trait Queryable: Sized + Serialize + Deserialize {
-    fn query_source(&self) -> QuerySource;
-
-    fn update(&mut self, d: &Discogs) {
-        let json: String = d.query(self.query_source()).unwrap();
-        *self = serde_json::from_str(&json[..]).unwrap();
-    }
-}
-
-trait DiscogsItem: Sized {
-    fn id(&self) -> u32;
-}
-
 pub struct Discogs {
     api_endpoint: String,
     key: Option<String>,
@@ -90,6 +57,15 @@ pub struct Discogs {
 }
 
 impl Discogs {
+    /// Constructs a new `Client` with the provided `user_agent`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::Discogs;
+    ///
+    /// let client = Discogs::new(env!("DISCOGS_USER_AGENT"));
+    /// ```
     pub fn new(user_agent: String) -> Self {
         Discogs {
             api_endpoint: "https://api.discogs.com".to_string(),
@@ -101,34 +77,50 @@ impl Discogs {
         }
     }
 
-    pub fn query_url(&self, url: String) -> Option<String> {
-        // let final_url = format!("{}&key={}&secret={}", url, self.key, self.secret);
-        let response = self.client
-            .get(&url[..])
-            .header(UserAgent(self.user_agent.clone()))
-            .send()
-            .ok();
-
-        if let Some(mut json) = response {
-
-            if json.status != StatusCode::Ok {
-                return None;
-            }
-
-            let mut s: String = "".to_owned();
-            if let Ok(sz) = json.read_to_string(&mut s) {
-                if sz <= 0 {
-                    return None;
-                }
-                return Some(s);
-            }
+    /// Constructs a new `QueryBuilder` from the client
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::Discogs;
+    ///
+    /// let query = Discogs::new(env!("DISCOGS_USER_AGENT")).query();
+    /// ```
+    pub fn query(&self) -> QueryBuilder {
+        QueryBuilder {
+            
         }
-        return None;
     }
 
-    pub fn query(&self, qs: QuerySource) -> Option<String> {
-        self.query_url(qs.get_address())
-    }
+//    pub fn query_url(&self, url: String) -> Option<String> {
+//        // let final_url = format!("{}&key={}&secret={}", url, self.key, self.secret);
+//        let response = self.client
+//            .get(&url[..])
+//            .header(UserAgent(self.user_agent.clone()))
+//            .send()
+//            .ok();
+//
+//        if let Some(mut json) = response {
+//
+//            if json.status != StatusCode::Ok {
+//                return None;
+//            }
+//
+//            let mut s: String = "".to_owned();
+//            if let Ok(sz) = json.read_to_string(&mut s) {
+//                if sz <= 0 {
+//                    return None;
+//                }
+//                return Some(s);
+//            }
+//        }
+//        return None;
+//    }
+//
+//    pub fn query(&self, qs: QuerySource) -> Option<String> {
+//        self.query_url(qs.get_address())
+//    }
+
 }
 
 #[cfg(test)]

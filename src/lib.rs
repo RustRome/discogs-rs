@@ -24,9 +24,13 @@ extern crate serde;
 #[macro_use]
 extern crate serde_derive;
 
-pub mod query_builder;
 pub mod pagination;
 pub mod data_structures;
+pub mod query {
+    pub mod query_type;
+    pub mod query_builder;
+    pub mod query_error;
+}
 
 use hyper::Client;
 use hyper::header::UserAgent;
@@ -34,7 +38,8 @@ use std::io::Read;
 use hyper::status::StatusCode;
 use serde::Serialize;
 use serde::Deserialize;
-pub use query_builder::{QueryBuilder, QueryType};
+pub use query::query_builder::QueryBuilder;
+pub use query::query_type::QueryType;
 
 pub struct Discogs {
     api_endpoint: String,

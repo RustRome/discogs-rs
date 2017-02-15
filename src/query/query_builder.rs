@@ -13,31 +13,9 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 use Discogs;
-
-#[derive(Debug)]
-pub enum QueryType {
-    Release,
-    Master,
-    Artist,
-    Label,
-    Search
-}
-
-impl QueryType {
-    /// Transforms the `QueryType` into the corresponding string
-    /// for the url
-    pub fn to_string(&self) -> String {
-        match *self {
-            QueryType::Release => "releases".to_owned(),
-            QueryType::Master => "masters".to_owned(),
-            QueryType::Artist => "artists".to_owned(),
-            QueryType::Label => "labels".to_owned(),
-            QueryType::Search => "database".to_owned()
-        }
-    }
-}
+use query::query_type::QueryType;
+use query::query_error::QueryError;
 
 pub struct QueryBuilder {
     api_endpoint: String,
@@ -73,6 +51,9 @@ impl QueryBuilder {
             query_type: None,
         }
     }
+
+    //pub fn get(&self) -> Result<String, QueryError> {
+    //}
 }
 
 #[cfg(test)]
@@ -93,15 +74,5 @@ mod tests {
         assert_eq!(query.secret, client.secret);
         assert!(query.query_type.is_none());
     }
-
-    #[test]
-    fn query_type_to_string() {
-        assert_eq!(QueryType::Release.to_string(), "releases");
-        assert_eq!(QueryType::Master.to_string(), "masters");
-        assert_eq!(QueryType::Artist.to_string(), "artists");
-        assert_eq!(QueryType::Label.to_string(), "labels");
-        assert_eq!(QueryType::Search.to_string(), "database");
-    }
-
 }
 

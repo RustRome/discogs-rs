@@ -13,9 +13,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-use Discogs;
-use query::query_type::QueryType;
-use query::query_error::QueryError;
+
+use query::{QueryType, QueryError};
 
 pub struct QueryBuilder {
     api_endpoint: String,
@@ -32,25 +31,65 @@ pub struct QueryBuilder {
 }
 
 impl QueryBuilder {
-    /// Uses the `Discogs` instance information to create a `QueryBuilder`
+    /// Create an instance of a `QueryBuilder`
+    ///
+    /// You will almost always want to use the method `query` provided
+    /// by a discogs instance.
     ///
     /// # Examples
     ///
     /// ```
-    /// use discogs::{Discogs, QueryBuilder};
+    /// use discogs::query::QueryBuilder;
     ///
-    /// let client = Discogs::new(env!("DISCOGS_USER_AGENT"));
-    /// let query = QueryBuilder::new(&client);
+    /// let query = QueryBuilder::new("https://api.discogs.com".to_string(),
+    ///                               env!("DISCOGS_USER_AGENT").to_string());
     /// ```
-    pub fn new(d: &Discogs) -> QueryBuilder {
+    pub fn new(api_endpoint: String, user_agent: String) -> QueryBuilder {
         QueryBuilder {
-            api_endpoint: d.api_endpoint.clone(),
-            user_agent: d.user_agent.clone(),
-            key: d.key.clone(),
-            secret: d.key.clone(),
+            api_endpoint: api_endpoint,
+            user_agent: user_agent,
+            key: None,
+            secret: None,
             query_type: None,
         }
     }
+
+    /// Assign a key to a query
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::query::QueryBuilder;
+    ///
+    /// let mut query = QueryBuilder::new("https://api.discogs.com".to_string(),
+    ///                                   env!("DISCOGS_USER_AGENT").to_string());
+    ///
+    /// query.key(Some(env!("DISCOGS_CLIENT_KEY").to_string()));
+    /// ```
+    pub fn key(&mut self, key: Option<String>) -> &mut Self {
+        self.key = key;
+        self
+    }
+
+    /// Assign a secret to a query
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::query::QueryBuilder;
+    ///
+    /// let mut query = QueryBuilder::new("https://api.discogs.com".to_string(),
+    ///                                   env!("DISCOGS_USER_AGENT").to_string());
+    ///
+    /// query.secret(Some(env!("DISCOGS_CLIENT_SECRET").to_string()));
+    /// ```
+    pub fn secret(&mut self, secret: Option<String>) -> &mut Self {
+        self.secret = secret;
+        self
+    }
+
+
+
 
     //pub fn get(&self) -> Result<String, QueryError> {
     //}
@@ -58,21 +97,25 @@ impl QueryBuilder {
 
 #[cfg(test)]
 mod tests {
-    use Discogs;
-    use QueryBuilder;
-    use QueryType;
+    use query::{QueryBuilder, QueryType};
 
     #[test]
-    fn query_builder_new() {
+    fn query_builder_test() {
 
-        let client = Discogs::new(env!("DISCOGS_USER_AGENT"));
-        let query = QueryBuilder::new(&client);
+        let mut query = QueryBuilder::new("https://api.discogs.com".to_string(),
+                                          env!("DISCOGS_USER_AGENT").to_string());
 
-        assert_eq!(query.api_endpoint, client.api_endpoint);
-        assert_eq!(query.user_agent, client.user_agent);
-        assert_eq!(query.key, client.key);
-        assert_eq!(query.secret, client.secret);
+        assert_eq!(query.api_endpoint, "https://api.discogs.com".to_string());
+        assert_eq!(query.user_agent, env!("DISCOGS_USER_AGENT"));
+        assert!(query.key.is_none());
+        assert!(query.secret.is_none());
         assert!(query.query_type.is_none());
+
+        query.key(Some(env!("DISCOGS_CLIENT_KEY").to_string()))
+            .secret(Some(env!("DISCOGS_CLIENT_SECRET").to_string()));
+
+        assert_eq!(query.key, Some(env!("DISCOGS_CLIENT_KEY").to_string()));
+        assert_eq!(query.secret, Some(env!("DISCOGS_CLIENT_SECRET").to_string()));
     }
 }
 

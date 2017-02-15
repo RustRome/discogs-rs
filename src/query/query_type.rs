@@ -39,7 +39,7 @@ impl QueryType {
 
 #[cfg(test)]
 mod tests {
-    use QueryType;
+    use query::QueryType;
 
     #[test]
     fn query_type_to_string() {

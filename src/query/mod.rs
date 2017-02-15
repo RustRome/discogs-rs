@@ -14,19 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![feature(proc_macro)]
-#![doc(test(attr(allow(unused_variables), deny(warnings))))]
+pub mod query_type;
+pub mod query_error;
+pub mod query_builder;
 
-extern crate hyper;
-extern crate serde_json;
-extern crate serde;
-
-#[macro_use]
-extern crate serde_derive;
-
-pub mod pagination;
-pub mod data_structures;
-pub mod query;
-pub mod discogs;
-
-pub use discogs::*;
+pub use self::query_type::QueryType;
+pub use self::query_error::QueryError;
+pub use self::query_builder::QueryBuilder;

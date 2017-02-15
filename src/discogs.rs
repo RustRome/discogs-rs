@@ -89,7 +89,7 @@ impl Discogs {
         self
     }
 
-    /// Sets the discogs api client secret
+    /// Returns a `QueryBuilder` to be used for querys
     ///
     /// # Examples
     ///
@@ -140,21 +140,6 @@ mod tests {
     }
 }
 
-//    /// Constructs a new `QueryBuilder` from the client
-//    ///
-//    /// # Examples
-//    ///
-//    /// ```
-//    /// use discogs::Discogs;
-//    ///
-//    /// let query = Discogs::new(env!("DISCOGS_USER_AGENT")).query();
-//    /// ```
-//    pub fn query(&self) -> QueryBuilder {
-//        QueryBuilder {
-//
-//        }
-//    }
-
 //    pub fn query_url(&self, url: String) -> Option<String> {
 //        // let final_url = format!("{}&key={}&secret={}", url, self.key, self.secret);
 //        let response = self.client
@@ -183,29 +168,3 @@ mod tests {
 //    pub fn query(&self, qs: QuerySource) -> Option<String> {
 //        self.query_url(qs.get_address())
 //    }
-
-//#[cfg(test)]
-//mod tests {
-//    use Discogs;
-//    //    use release::ReleaseQuery;
-//    use data_structures::master::Master;
-//    use data_structures::artist::Artist;
-//    #[test]
-//    fn discogs_inst() {
-//        let l: Discogs = Discogs::new("useragent".to_owned());
-//        let mut at = Master::new(1016, &l);
-//        let mut i = Artist::new(1020, &l);
-//
-//        println!("{:?}", i);
-//        at.update(&l);
-//        println!("{:?}", at.main_release);
-//        //        for i in 950..1020 {
-//        //            print!("{}: ", i);
-//        //            if let Some(r) = at.id(i).call() {
-//        //                println!("OK");
-//        //            } else {
-//        //                println!("ERR");
-//        //            }
-//        //        }
-//    }
-//}

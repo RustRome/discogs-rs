@@ -13,9 +13,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use data_structures::contributor::Contributor;
-use data_structures::artist::Artist;
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Community {
     pub contributors: Vec<Contributor>,

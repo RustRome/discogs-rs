@@ -14,7 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub struct QueryError {
+use serde_json;
+
+pub enum QueryError {
+    JsonDecodeError {
+        serde_err: Option<serde_json::Error>
+    }
 }
 
 impl QueryError {

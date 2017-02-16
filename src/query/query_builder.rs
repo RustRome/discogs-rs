@@ -25,11 +25,8 @@ pub trait QueryBuilder {
         None
     }
 
-    // returns the rest of the url from the api_endpoint on
+    // returns the  url to perform the query
     fn get_query_url(&self) -> String;
-
-    // returns the endpoint to be used
-    fn get_api_endpoint(&self) -> String;
 
     fn get_user_agent(&self) -> String;
 

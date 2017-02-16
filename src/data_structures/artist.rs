@@ -15,6 +15,11 @@
 
 use data_structures::*;
 use query::*;
+use serde_json;
+
+/// The default host address for the API.
+const ARTIST_ENDPOINT: &'static str = "artists";
+
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Artist {
@@ -116,6 +121,37 @@ impl ArtistQueryBuilder {
             secret: None
         }
     }
+
+    /// Perform request
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::data_structures::ArtistQueryBuilder;
+    ///
+    /// let artist = ArtistQueryBuilder::new(4567,
+    ///                                  discogs::API_URL.to_string(),
+    ///                                  env!("DISCOGS_USER_AGENT").to_string())
+    ///                                  .get();
+    /// ```
+    pub fn get(&self) -> Result<Artist, QueryError> {
+        let result: Result<String, QueryError> = self.perform_request();
+
+        if let Err(error) = result {
+            return Err(error);
+        } else {
+            let result_string = result.ok().unwrap();
+            let json = serde_json::from_str(&result_string);
+
+            if let Ok(artist) = json {
+                return Ok(artist);
+            } else {
+                return Err(QueryError::JsonDecodeError {
+                    serde_err: json.err()
+                });
+            }
+        }
+    }
 }
 
 impl QueryBuilder for ArtistQueryBuilder {
@@ -128,17 +164,14 @@ impl QueryBuilder for ArtistQueryBuilder {
     }
 
     fn get_query_url(&self) -> String {
-        "".to_string()
+        format!("{}{}/{}", self.api_endpoint, ARTIST_ENDPOINT, self.id)
     }
 
-    fn get_api_endpoint(&self) -> String {
-        self.api_endpoint.clone()
-    }
     fn get_user_agent(&self) -> String {
         self.user_agent.clone()
     }
-
 }
+
 #[cfg(test)]
 mod tests {
     use discogs::*;

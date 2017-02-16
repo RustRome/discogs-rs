@@ -36,9 +36,6 @@ pub struct Discogs {
 
     // Maximum number of API Queries per minute
     rate_limit: u32,
-
-    // hyper client
-    client: Client,
 }
 
 impl Discogs {
@@ -58,7 +55,6 @@ impl Discogs {
             secret: None,
             user_agent: user_agent.to_owned(),
             rate_limit: API_RATE_LIMIT,
-            client: Client::new(),
         }
     }
 
@@ -143,32 +139,3 @@ mod tests {
         assert_eq!(client.secret, Some(env!("DISCOGS_CLIENT_SECRET").to_owned()));
     }
 }
-
-//    pub fn query_url(&self, url: String) -> Option<String> {
-//        // let final_url = format!("{}&key={}&secret={}", url, self.key, self.secret);
-//        let response = self.client
-//            .get(&url[..])
-//            .header(UserAgent(self.user_agent.clone()))
-//            .send()
-//            .ok();
-//
-//        if let Some(mut json) = response {
-//
-//            if json.status != StatusCode::Ok {
-//                return None;
-//            }
-//
-//            let mut s: String = "".to_owned();
-//            if let Ok(sz) = json.read_to_string(&mut s) {
-//                if sz <= 0 {
-//                    return None;
-//                }
-//                return Some(s);
-//            }
-//        }
-//        return None;
-//    }
-//
-//    pub fn query(&self, qs: QuerySource) -> Option<String> {
-//        self.query_url(qs.get_address())
-//    }

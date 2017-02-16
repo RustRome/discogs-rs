@@ -18,6 +18,14 @@ use hyper::header::UserAgent;
 use std::io::Read;
 use hyper::status::StatusCode;
 use data_structures::*;
+use super::*;
+
+/// The default host address for the API.
+pub const API_URL: &'static str = "https://api.discogs.com/";
+
+/// The default rate limit for discogs
+pub const API_RATE_LIMIT: u32 = 240;
+
 
 pub struct Discogs {
     api_endpoint: String,
@@ -45,11 +53,11 @@ impl Discogs {
     /// ```
     pub fn new(user_agent: &str) -> Self {
         Discogs {
-            api_endpoint: "https://api.discogs.com".to_owned(),
+            api_endpoint: API_URL.to_owned(),
             key: None,
             secret: None,
             user_agent: user_agent.to_owned(),
-            rate_limit: 240,
+            rate_limit: API_RATE_LIMIT,
             client: Client::new(),
         }
     }

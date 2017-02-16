@@ -104,7 +104,7 @@ impl ArtistQueryBuilder {
     /// use discogs::data_structures::ArtistQueryBuilder;
     ///
     /// let aqb = ArtistQueryBuilder::new(4567,
-    ///                                   "https://api.discogs.com".to_string(),
+    ///                                   discogs::API_URL.to_string(),
     ///                                   env!("DISCOGS_USER_AGENT").to_string());
     /// ```
     pub fn new(id: u32, api_endpoint: String, user_agent: String) -> ArtistQueryBuilder {
@@ -141,7 +141,7 @@ impl QueryBuilder for ArtistQueryBuilder {
 }
 #[cfg(test)]
 mod tests {
-    use discogs::Discogs;
+    use discogs::*;
     use data_structures::*;
 
     fn aqb(id: u32) -> ArtistQueryBuilder {
@@ -153,7 +153,7 @@ mod tests {
         let qb = aqb(789);
 
         assert_eq!(qb.id, 789);
-        assert_eq!(qb.api_endpoint, "https://api.discogs.com".to_owned());
+        assert_eq!(qb.api_endpoint, API_URL.to_owned());
         assert_eq!(qb.user_agent, env!("DISCOGS_USER_AGENT"));
         assert!(qb.key.is_none());
         assert!(qb.secret.is_none());

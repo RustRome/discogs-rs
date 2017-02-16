@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use data_structures::*;
+use query::*;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Artist {
@@ -74,6 +75,27 @@ impl ArtistQueryBuilder {
             secret: None
         }
     }
+}
+
+impl QueryBuilder for ArtistQueryBuilder {
+    fn get_key(&self) -> Option<String> {
+        self.key.clone()
+    }
+
+    fn get_secret(&self) -> Option<String> {
+        self.secret.clone()
+    }
+
+    fn get_query_type(&self) -> QueryType {
+        QueryType::Artist
+    }
+    fn get_api_endpoint(&self) -> String {
+        self.api_endpoint.clone()
+    }
+    fn get_user_agent(&self) -> String {
+        self.user_agent.clone()
+    }
+
 }
 
 #[cfg(test)]

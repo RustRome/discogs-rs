@@ -17,9 +17,9 @@ use hyper::Client;
 use hyper::header::UserAgent;
 use std::io::Read;
 use hyper::status::StatusCode;
-use serde::Serialize;
-use serde::Deserialize;
-use query::query_type::QueryType;
+use serde::{Serialize, Deserialize};
+use query::QueryType;
+use data_structures::*;
 
 pub struct Discogs {
     api_endpoint: String,
@@ -87,6 +87,24 @@ impl Discogs {
         self.secret = Some(secret.to_owned());
         self
     }
+
+    /// Returns an instance of the `ArtistQueryBuilder` structure for the specified id
+    /// This allows you to pass parameters to build a request.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::Discogs;
+    ///
+    /// let artist = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    ///                       .artist(4567);
+    /// ```
+    pub fn artist(&mut self, id: u32) -> ArtistQueryBuilder {
+        ArtistQueryBuilder::new(id,
+                                self.api_endpoint.clone(),
+                                self.user_agent.clone())
+    }
+
 
 }
 

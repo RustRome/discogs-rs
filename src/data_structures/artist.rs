@@ -40,3 +40,61 @@ pub struct Artist {
 
 impl Artist {
 }
+
+pub struct ArtistQueryBuilder {
+    //artist id
+    id: u32,
+
+    api_endpoint: String,
+    user_agent: String,
+
+    // Optional key and secret if necessary
+    key: Option<String>,
+    secret: Option<String>,
+}
+
+impl ArtistQueryBuilder {
+    /// Creates a new instance of `ArtistQueryBuilder`
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::data_structures::ArtistQueryBuilder;
+    ///
+    /// let aqb = ArtistQueryBuilder::new(4567,
+    ///                                   "https://api.discogs.com".to_string(),
+    ///                                   env!("DISCOGS_USER_AGENT").to_string());
+    /// ```
+    pub fn new(id: u32, api_endpoint: String, user_agent: String) -> ArtistQueryBuilder {
+        ArtistQueryBuilder {
+            id: id,
+            api_endpoint: api_endpoint,
+            user_agent: user_agent,
+            key: None,
+            secret: None
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use discogs::Discogs;
+    use data_structures::*;
+
+    fn aqb(id: u32) -> ArtistQueryBuilder {
+        Discogs::new(env!("DISCOGS_USER_AGENT")).artist(id)
+    }
+
+    #[test]
+    fn test_request_builder() {
+        let qb = aqb(789);
+
+        assert_eq!(qb.id, 789);
+        assert_eq!(qb.api_endpoint, "https://api.discogs.com".to_owned());
+        assert_eq!(qb.user_agent, env!("DISCOGS_USER_AGENT"));
+        assert!(qb.key.is_none());
+        assert!(qb.secret.is_none());
+    }
+}
+
+

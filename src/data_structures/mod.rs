@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod artist;
-pub mod contributor;
-pub mod label;
-pub mod release;
-pub mod company;
-pub mod image;
-pub mod master;
-pub mod others;
+mod artist;
+mod contributor;
+mod label;
+mod release;
+mod company;
+mod image;
+mod master;
+mod others;
 
 pub use self::artist::*;
 pub use self::contributor::*;

@@ -40,6 +40,39 @@ pub struct Artist {
 }
 
 impl Artist {
+    /// Creates a new instance of `Artist`
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::data_structures::Artist;
+    ///
+    /// let artist = Artist::new(4567,
+    ///                          "name".to_string(),
+    ///                          "resource_url".to_string());
+    /// ```
+    pub fn new(id: u32,name: String, resource_url: String) -> Artist {
+         Artist {
+            id: id,
+            name: name,
+            resource_url: resource_url,
+            tracks: None,
+            uri: None,
+            releases_url: None,
+            aliases: None,
+            join: None,
+            role: None,
+            anv: None,
+            members: None,
+            active: None,
+            namevariations: None,
+            urls: None,
+            images: None,
+            profile: None,
+            data_quality: None,
+            realname: None,
+        }
+    }
 }
 
 pub struct ArtistQueryBuilder {
@@ -98,6 +131,13 @@ impl QueryBuilder for ArtistQueryBuilder {
 
 }
 
+// TODO: make a more comprehensive test
+impl PartialEq for Artist {
+    fn eq(&self, other: &Artist) -> bool {
+        other.id == self.id
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use discogs::Discogs;
@@ -116,6 +156,28 @@ mod tests {
         assert_eq!(qb.user_agent, env!("DISCOGS_USER_AGENT"));
         assert!(qb.key.is_none());
         assert!(qb.secret.is_none());
+    }
+
+    fn test_artist_new() {
+        let artist = Artist::new(4567,
+                                 "name".to_string(),
+                                 "resource_url".to_string());
+
+        assert_eq!(artist.id, 4567);
+        assert_eq!(artist.name, "name".to_string());
+        assert_eq!(artist.resource_url, "resource_url".to_string());
+    }
+
+    #[test]
+    fn test_artist_eq() {
+        let artist = Artist::new(4567,
+                                 "name".to_string(),
+                                 "resource_url".to_string());
+        let artist2 = Artist::new(4567,
+                                 "adsh".to_string(),
+                                 "dasdas".to_string());
+
+        assert!(artist == artist2);
     }
 }
 

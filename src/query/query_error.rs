@@ -16,15 +16,10 @@
 
 use serde_json;
 
+/// `QueryError` is a structure of all the errors
+/// that are possible during a query
 pub enum QueryError {
     JsonDecodeError {
         serde_err: Option<serde_json::Error>
     }
 }
-
-impl QueryError {
-    pub fn new() -> QueryError {
-        unimplemented!();
-    }
-}
-

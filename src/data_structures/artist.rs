@@ -75,6 +75,14 @@ impl Artist {
     }
 }
 
+// TODO: make a more comprehensive test
+impl PartialEq for Artist {
+    fn eq(&self, other: &Artist) -> bool {
+        other.id == self.id
+    }
+}
+
+
 pub struct ArtistQueryBuilder {
     //artist id
     id: u32,
@@ -119,9 +127,10 @@ impl QueryBuilder for ArtistQueryBuilder {
         self.secret.clone()
     }
 
-    fn get_query_type(&self) -> QueryType {
-        QueryType::Artist
+    fn get_query_url(&self) -> String {
+        "".to_string()
     }
+
     fn get_api_endpoint(&self) -> String {
         self.api_endpoint.clone()
     }
@@ -130,14 +139,6 @@ impl QueryBuilder for ArtistQueryBuilder {
     }
 
 }
-
-// TODO: make a more comprehensive test
-impl PartialEq for Artist {
-    fn eq(&self, other: &Artist) -> bool {
-        other.id == self.id
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use discogs::Discogs;
@@ -158,6 +159,7 @@ mod tests {
         assert!(qb.secret.is_none());
     }
 
+    #[test]
     fn test_artist_new() {
         let artist = Artist::new(4567,
                                  "name".to_string(),
@@ -180,5 +182,3 @@ mod tests {
         assert!(artist == artist2);
     }
 }
-
-

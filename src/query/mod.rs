@@ -14,10 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod query_type;
 pub mod query_error;
 pub mod query_builder;
 
-pub use self::query_type::QueryType;
 pub use self::query_error::QueryError;
 pub use self::query_builder::QueryBuilder;

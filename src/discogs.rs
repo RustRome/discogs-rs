@@ -17,8 +17,6 @@ use hyper::Client;
 use hyper::header::UserAgent;
 use std::io::Read;
 use hyper::status::StatusCode;
-use serde::{Serialize, Deserialize};
-use query::QueryType;
 use data_structures::*;
 
 pub struct Discogs {

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use query::{QueryType, QueryError};
+use query::QueryError;
 
 pub trait QueryBuilder {
     fn get_key(&self) -> Option<String> {
@@ -25,7 +25,15 @@ pub trait QueryBuilder {
         None
     }
 
-    fn get_query_type(&self) -> QueryType;
+    // returns the rest of the url from the api_endpoint on
+    fn get_query_url(&self) -> String;
+
+    // returns the endpoint to be used
     fn get_api_endpoint(&self) -> String;
+
     fn get_user_agent(&self) -> String;
+
+    fn perform_request(&self) -> Result<String, QueryError> {
+        Ok("ads".to_string())
+    }
 }

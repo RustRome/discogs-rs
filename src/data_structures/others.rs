@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use data_structures::contributor::Contributor;
-use data_structures::artist::Artist;
+use data_structures::*;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Community {
@@ -57,7 +56,7 @@ pub struct Track {
     pub position: String,
     pub title: String,
     pub type_: String,
-    pub extraartists: Option<Vec<Artist>>,
+    pub extra_artists: Option<Vec<Artist>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

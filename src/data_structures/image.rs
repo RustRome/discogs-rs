@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use Discogs;
-use Queryable;
-use serde_json;
-use QuerySource;
+use data_structures::*;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Image {
@@ -32,16 +29,4 @@ pub struct Image {
 
 
 impl Image {
-    pub fn new(resource_url: String, d: &Discogs) -> Self {
-        // TODO: Do we need clone here?
-        let qs = QuerySource::Url { url: resource_url };
-        serde_json::from_str(&d.query(qs).unwrap()[..]).unwrap()
-    }
-}
-
-impl Queryable for Image {
-    // TODO: there is probably a better way to do this without the clone
-    fn query_source(&self) -> QuerySource {
-        QuerySource::Url { url: self.resource_url.clone() }
-    }
 }

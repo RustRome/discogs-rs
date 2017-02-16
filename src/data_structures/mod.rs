@@ -1,3 +1,4 @@
+// Library that eases the use of discogs API
 // Copyright (C) 2016  Afonso Bordado <afonsobordado@az8.co>
 //
 // This program is free software: you can redistribute it and/or modify
@@ -13,19 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use Discogs;
-use Queryable;
-use serde_json;
-use serde_json::from_str;
-use std::io::Read;
-use hyper::client::Response;
-use QuerySource;
-use data_structures::others::*;
-use data_structures::label::Label;
-use data_structures::image::Image;
-use data_structures::company::Company;
-use data_structures::contributor::Contributor;
+pub mod artist;
+pub mod contributor;
+pub mod label;
+pub mod release;
+pub mod company;
+pub mod image;
+pub mod master;
+pub mod others;
 
-#[derive(Debug)]
-struct SearchParameters{}
-
+pub use self::artist::*;
+pub use self::contributor::*;
+pub use self::label::*;
+pub use self::release::*;
+pub use self::company::*;
+pub use self::image::*;
+pub use self::master::*;
+pub use self::others::*;

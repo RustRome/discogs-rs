@@ -13,8 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use Queryable;
-use QuerySource;
+use data_structures::*;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Company {
@@ -24,11 +23,4 @@ pub struct Company {
     pub id: u32,
     pub name: String,
     pub resource_url: String,
-}
-
-impl Queryable for Company {
-    // TODO: there is probably a better way to do this without the clone
-    fn query_source(&self) -> QuerySource {
-        QuerySource::Url { url: self.resource_url.clone() }
-    }
 }

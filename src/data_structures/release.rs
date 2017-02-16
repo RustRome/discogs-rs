@@ -13,17 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use Discogs;
-use Queryable;
-use serde_json;
-use QuerySource;
-use data_structures::others::*;
-use data_structures::label::Label;
-use data_structures::image::Image;
-use data_structures::artist::Artist;
-use data_structures::company::Company;
-
-
+use data_structures::*;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Release {
@@ -45,7 +35,7 @@ pub struct Release {
     pub companies: Option<Vec<Company>>,
     pub country: Option<String>,
     pub estimated_weight: Option<u32>,
-    pub extraartists: Option<Vec<Artist>>,
+    pub extra_artists: Option<Vec<Artist>>,
     pub format_quantity: Option<u32>,
     pub formats: Option<Vec<ReleaseFormat>>,
     pub genres: Option<Vec<String>>,
@@ -61,25 +51,4 @@ pub struct Release {
     pub styles: Option<Vec<String>>,
     pub tracklist: Option<Vec<Track>>,
     pub videos: Option<Vec<Video>>,
-}
-// Plain data structures
-
-
-impl Release {
-    pub fn new(id: u32, d: &Discogs) -> Self {
-        // TODO: Do we need clone here?
-        let qs = QuerySource::Id {
-            api_endpoint: d.api_endpoint.clone(),
-            endpoint: "releases".to_owned(),
-            id: id,
-        };
-        serde_json::from_str(&d.query(qs).unwrap()[..]).unwrap()
-    }
-}
-
-impl Queryable for Release {
-    // TODO: there is probably a better way to do this without the clone
-    fn query_source(&self) -> QuerySource {
-        QuerySource::Url { url: self.resource_url.clone() }
-    }
 }

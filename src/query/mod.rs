@@ -16,6 +16,7 @@
 
 pub mod query_error;
 pub mod query_builder;
+pub mod query_auth;
 
 pub use self::query_error::QueryError;
 pub use self::query_builder::QueryBuilder;

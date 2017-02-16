@@ -15,6 +15,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use query::QueryError;
+use query::query_auth::*;
+use hyper;
+use hyper::header::*;
+
 
 pub trait QueryBuilder {
     fn get_key(&self) -> Option<String> {
@@ -31,6 +35,43 @@ pub trait QueryBuilder {
     fn get_user_agent(&self) -> String;
 
     fn perform_request(&self) -> Result<String, QueryError> {
+        let client = hyper::Client::new();
+        let response = client.get(self.get_query_url().as_str())
+                             .header(UserAgent(self.get_user_agent()))
+                             .header(Authorization(DiscogsKSAuth {
+                                         key: self.get_key(),
+                                         secret: self.get_secret()
+                             }))
+                             .send();
+
+//    pub fn query_url(&self, url: String) -> Option<String> {
+//        // let final_url = format!("{}&key={}&secret={}", url, self.key, self.secret);
+//        let response = self.client
+//            .get(&url[..])
+//            .header(UserAgent(self.user_agent.clone()))
+//            .send()
+//            .ok();
+//
+//        if let Some(mut json) = response {
+//
+//            if json.status != StatusCode::Ok {
+//                return None;
+//            }
+//
+//            let mut s: String = "".to_owned();
+//            if let Ok(sz) = json.read_to_string(&mut s) {
+//                if sz <= 0 {
+//                    return None;
+//                }
+//                return Some(s);
+//            }
+//        }
+//        return None;
+//    }
+//
+//    pub fn query(&self, qs: QuerySource) -> Option<String> {
+//        self.query_url(qs.get_address())
+//    }
         Ok("ads".to_string())
     }
 }

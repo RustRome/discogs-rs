@@ -16,7 +16,12 @@
 
 pub mod query_error;
 pub mod query_builder;
-pub mod query_auth;
+pub mod query_token_auth;
+pub mod query_ks_auth;
 
 pub use self::query_error::QueryError;
 pub use self::query_builder::QueryBuilder;
+
+//TODO: Put these under the module auth
+pub use self::query_token_auth::DiscogsTokenAuth;
+pub use self::query_ks_auth::DiscogsKSAuth;

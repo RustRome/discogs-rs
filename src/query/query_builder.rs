@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use query::QueryError;
-use query::query_auth::*;
+use query::*;
 use hyper;
 use hyper::header::*;
 

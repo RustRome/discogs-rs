@@ -47,6 +47,7 @@ impl Scheme for DiscogsKSAuth {
     }
 }
 
+//TODO: Make a neater implementation of this
 impl FromStr for DiscogsKSAuth {
     type Err = hyper::error::Error;
     fn from_str(s: &str) -> hyper::Result<DiscogsKSAuth> {
@@ -98,7 +99,7 @@ impl FromStr for DiscogsKSAuth {
 mod tests {
     use hyper::header::{Authorization, Basic, Bearer};
     use hyper::header::{Headers, Header};
-    use query::query_auth::DiscogsKSAuth;
+    use query::DiscogsKSAuth;
 
     #[test]
     fn test_discogsks_auth() {
@@ -158,9 +159,4 @@ mod tests {
         assert_eq!(auth.0.key, None);
         assert_eq!(auth.0.secret, Some("sesame".to_string()));
     }
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DiscogsTokenAuth {
-    token: Option<String>,
 }

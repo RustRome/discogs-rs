@@ -214,4 +214,37 @@ mod tests {
 
         assert!(artist == artist2);
     }
+
+    //#[test]
+    //fn test_perform_artist_request() {
+    //    use discogs::Discogs;
+
+    //    let artist = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    //        .artist(4567)
+    //        .get()
+    //        .ok()
+    //        .unwrap();
+
+    //    assert_eq!(artist.id, 4567);
+    //    assert_eq!(artist.name, "Whirlpool Productions");
+    //    assert_eq!(artist.resource_url, "https://api.discogs.com/artists/4567");
+    //    assert_eq!(artist.tracks, None);
+    //    assert_eq!(artist.aliases, None);
+    //    assert_eq!(artist.releases_url,
+    //               Some("https://api.discogs.com/artists/4567/releases".to_string()));
+    //    println!("{:?}", artist);
+
+    //}
+
+    //#[test]
+    //fn test_perform_invalid_artist_request() {
+    //    use discogs::Discogs;
+
+    //    let artist = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    //        .artist(4294967295) //u32 max, should fail
+    //        .get()
+    //        .ok()
+    //        .unwrap();
+
+    //}
 }

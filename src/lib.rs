@@ -20,6 +20,9 @@ extern crate hyper;
 extern crate serde_json;
 extern crate serde;
 
+#[cfg(test)]
+extern crate mockito;
+
 #[macro_use]
 extern crate serde_derive;
 

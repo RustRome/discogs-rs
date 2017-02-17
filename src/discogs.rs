@@ -19,8 +19,14 @@ use std::io::Read;
 use hyper::status::StatusCode;
 use data_structures::*;
 use super::*;
+#[cfg(test)]
+use mockito::SERVER_URL;
+
+#[cfg(test)]
+pub const API_URL: &'static str = mockito::SERVER_URL;
 
 /// The default host address for the API.
+#[cfg(not(test))]
 pub const API_URL: &'static str = "https://api.discogs.com/";
 
 /// The default rate limit for discogs

@@ -18,7 +18,8 @@ use query::QueryError;
 use query::*;
 use hyper;
 use hyper::header::*;
-
+use hyper::status::StatusCode;
+use std::io::Read;
 
 pub trait QueryBuilder {
     fn get_key(&self) -> Option<String> {
@@ -34,6 +35,7 @@ pub trait QueryBuilder {
 
     fn get_user_agent(&self) -> String;
 
+    //TODO: Fix the unwrap()
     fn perform_request(&self) -> Result<String, QueryError> {
         let client = hyper::Client::new();
         let response = client.get(self.get_query_url().as_str())
@@ -44,34 +46,33 @@ pub trait QueryBuilder {
                              }))
                              .send();
 
-//    pub fn query_url(&self, url: String) -> Option<String> {
-//        // let final_url = format!("{}&key={}&secret={}", url, self.key, self.secret);
-//        let response = self.client
-//            .get(&url[..])
-//            .header(UserAgent(self.user_agent.clone()))
-//            .send()
-//            .ok();
-//
-//        if let Some(mut json) = response {
-//
-//            if json.status != StatusCode::Ok {
-//                return None;
-//            }
-//
-//            let mut s: String = "".to_owned();
-//            if let Ok(sz) = json.read_to_string(&mut s) {
-//                if sz <= 0 {
-//                    return None;
-//                }
-//                return Some(s);
-//            }
-//        }
-//        return None;
-//    }
-//
-//    pub fn query(&self, qs: QuerySource) -> Option<String> {
-//        self.query_url(qs.get_address())
-//    }
-        Ok("ads".to_string())
+        match response {
+            Ok(mut text) => {
+                let mut json: String = "".to_owned();
+
+                if text.status != StatusCode::Ok {
+                    return Err(QueryError::HyperStatusError {
+                        response: text
+                    });
+                }
+                let text_read_result = text.read_to_string(&mut json);
+
+                if let Ok(sz) = text_read_result {
+                    if sz <= 0 {
+                        return Err(QueryError::EmptyResponseError);
+                    }
+                    return Ok(json);
+                } else {
+                    return Err(QueryError::TextReadError {
+                        error: text_read_result.err().unwrap()
+                    });
+                }
+
+
+            },
+            Err(error) => return Err(QueryError::HyperSendError {
+                hyper_err: error
+            })
+        }
     }
 }

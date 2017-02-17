@@ -15,11 +15,24 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use serde_json;
+use hyper;
+use std;
 
 /// `QueryError` is a structure of all the errors
 /// that are possible during a query
+// TODO: Document when these errors would occur
 pub enum QueryError {
     JsonDecodeError {
         serde_err: Option<serde_json::Error>
+    },
+    HyperSendError {
+        hyper_err: hyper::Error
+    },
+    HyperStatusError {
+        response: hyper::client::response::Response
+    },
+    EmptyResponseError,
+    TextReadError {
+        error: std::io::Error
     }
 }

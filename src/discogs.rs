@@ -27,7 +27,7 @@ pub const API_URL: &'static str = mockito::SERVER_URL;
 
 /// The default host address for the API.
 #[cfg(not(test))]
-pub const API_URL: &'static str = "https://api.discogs.com/";
+pub const API_URL: &'static str = "https://api.discogs.com";
 
 /// The default rate limit for discogs
 pub const API_RATE_LIMIT: u32 = 240;

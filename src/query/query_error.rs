@@ -21,6 +21,7 @@ use std;
 /// `QueryError` is a structure of all the errors
 /// that are possible during a query
 // TODO: Document when these errors would occur
+#[derive(Debug)]
 pub enum QueryError {
     JsonDecodeError {
         serde_err: Option<serde_json::Error>

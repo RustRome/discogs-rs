@@ -17,12 +17,13 @@
 #![doc(test(attr(allow(unused_variables), deny(warnings))))]
 
 extern crate hyper;
-extern crate serde_json;
 extern crate serde;
 
 #[cfg(test)]
 extern crate mockito;
 
+#[macro_use]
+extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
 

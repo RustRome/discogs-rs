@@ -18,7 +18,7 @@ use query::*;
 use serde_json;
 
 /// The default host address for the API.
-const ARTIST_ENDPOINT: &'static str = "artists";
+const ARTIST_ENDPOINT: &'static str = "/artists";
 
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -176,6 +176,9 @@ impl QueryBuilder for ArtistQueryBuilder {
 mod tests {
     use discogs::*;
     use data_structures::*;
+    use mockito::mock;
+    use serde_json;
+    use serde_json::to_string;
 
     fn aqb(id: u32) -> ArtistQueryBuilder {
         Discogs::new(env!("DISCOGS_USER_AGENT")).artist(id)
@@ -215,36 +218,26 @@ mod tests {
         assert!(artist == artist2);
     }
 
-    //#[test]
-    //fn test_perform_artist_request() {
-    //    use discogs::Discogs;
+    #[test]
+    fn test_perform_artist_request() {
+        mock("GET", "/artists/4567")
+            .with_status(200)
+            .with_header("content-type", "text/json")
+            .with_body(to_string(&json!({
+                "id": 4567,
+                "resource_url": "https://api.discogs.com/artists/4567",
+                "name": "Whirlpool Productions"
+            })).unwrap().as_str())
+            .create_for(|| {
+                let artist = Discogs::new(env!("DISCOGS_USER_AGENT"))
+                    .artist(4567)
+                    .get()
+                    .ok()
+                    .unwrap();
 
-    //    let artist = Discogs::new(env!("DISCOGS_USER_AGENT"))
-    //        .artist(4567)
-    //        .get()
-    //        .ok()
-    //        .unwrap();
-
-    //    assert_eq!(artist.id, 4567);
-    //    assert_eq!(artist.name, "Whirlpool Productions");
-    //    assert_eq!(artist.resource_url, "https://api.discogs.com/artists/4567");
-    //    assert_eq!(artist.tracks, None);
-    //    assert_eq!(artist.aliases, None);
-    //    assert_eq!(artist.releases_url,
-    //               Some("https://api.discogs.com/artists/4567/releases".to_string()));
-    //    println!("{:?}", artist);
-
-    //}
-
-    //#[test]
-    //fn test_perform_invalid_artist_request() {
-    //    use discogs::Discogs;
-
-    //    let artist = Discogs::new(env!("DISCOGS_USER_AGENT"))
-    //        .artist(4294967295) //u32 max, should fail
-    //        .get()
-    //        .ok()
-    //        .unwrap();
-
-    //}
+                assert_eq!(artist.id, 4567);
+                assert_eq!(artist.resource_url, "https://api.discogs.com/artists/4567".to_string());
+                assert_eq!(artist.name, "Whirlpool Productions".to_string());
+            });
+    }
 }

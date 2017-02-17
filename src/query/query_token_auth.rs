@@ -33,7 +33,7 @@ impl Scheme for DiscogsTokenAuth {
     }
 
     fn fmt_scheme(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let mut text: String = self.token.clone();
+        let mut text: String = format!("token={}", self.token.clone());
         f.write_str(&encode(text.as_ref()))
     }
 }
@@ -75,20 +75,20 @@ mod tests {
     use query::DiscogsTokenAuth;
 
     #[test]
-    fn test_discogsks_auth() {
+    fn test_discogs_token_auth() {
         let mut headers = Headers::new();
         headers.set(Authorization(DiscogsTokenAuth {
             token: "fghcvkbaskj,dabsd".to_owned(),
         }));
         assert_eq!(
             headers.to_string(),
-            "Authorization: Discogs ZmdoY3ZrYmFza2osZGFic2Q=\r\n".to_owned());
+            "Authorization: Discogs dG9rZW49ZmdoY3ZrYmFza2osZGFic2Q=\r\n".to_owned());
     }
 
     #[test]
-    fn test_discogsks_auth_parse() {
+    fn test_discogs_token_auth_parse() {
         let auth: Authorization<DiscogsTokenAuth> = Header::parse_header(
-            &[b"Discogs ZmdoY3ZrYmFza2osZGFic2Q=".to_vec()])
+            &[b"Discogs dG9rZW49ZmdoY3ZrYmFza2osZGFic2Q=".to_vec()])
             .unwrap();
         assert_eq!(auth.0.token, "fghcvkbaskj,dabsd".to_string());
     }

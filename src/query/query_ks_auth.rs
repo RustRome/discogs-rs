@@ -18,7 +18,6 @@ use std::any::Any;
 use std::fmt::{self, Display};
 use std::str::{FromStr, from_utf8};
 use std::ops::{Deref, DerefMut};
-use base64::{encode, decode};
 use hyper::header::*;
 use hyper;
 
@@ -43,7 +42,7 @@ impl Scheme for DiscogsKSAuth {
         if let Some(secret) = self.secret.clone() {
             text.push_str(format!("secret={}", secret).as_str());
         }
-        f.write_str(&encode(text.as_ref()))
+        f.write_str(&text.as_ref())
     }
 }
 
@@ -51,44 +50,38 @@ impl Scheme for DiscogsKSAuth {
 impl FromStr for DiscogsKSAuth {
     type Err = hyper::error::Error;
     fn from_str(s: &str) -> hyper::Result<DiscogsKSAuth> {
-        match decode(s) {
-            Ok(decoded) => match String::from_utf8(decoded) {
-                Ok(text) => {
-                    let mut parts = &mut text.split(' ');
-                    let key = match parts.next() {
-                        Some(key_part) => {
-                            let mut kp = &mut key_part.split('=');
-                            kp.next();
-                            match kp.next() {
-                                Some(t) => Some(t.to_owned()),
-                                None => None
-                            }
+        match String::from_utf8(s.into()) {
+            Ok(text) => {
+                let mut parts = &mut text.split(' ');
+                let key = match parts.next() {
+                    Some(key_part) => {
+                        let mut kp = &mut key_part.split('=');
+                        kp.next();
+                        match kp.next() {
+                            Some(t) => Some(t.to_owned()),
+                            None => None
                         }
-                        None => return Err(hyper::error::Error::Header)
-                    };
-                    let secret = match parts.next() {
-                        Some(secret_part) => {
-                            let mut sp = &mut secret_part.split('=');
-                            sp.next();
-                            match sp.next() {
-                                Some(t) => Some(t.to_owned()),
-                                None => None
-                            }
+                    }
+                    None => return Err(hyper::error::Error::Header)
+                };
+                let secret = match parts.next() {
+                    Some(secret_part) => {
+                        let mut sp = &mut secret_part.split('=');
+                        sp.next();
+                        match sp.next() {
+                            Some(t) => Some(t.to_owned()),
+                            None => None
                         }
-                        None => return Err(hyper::error::Error::Header)
-                    };
-                    Ok(DiscogsKSAuth {
-                        key: key,
-                        secret: secret
-                    })
-                },
-                Err(e) => {
-                    println!("DiscogsKSAuth::from_utf8 error={:?}", e);
-                    Err(hyper::error::Error::Header)
-                }
+                    }
+                    None => return Err(hyper::error::Error::Header)
+                };
+                Ok(DiscogsKSAuth {
+                    key: key,
+                    secret: secret
+                })
             },
             Err(e) => {
-                println!("DiscogsKSAuth::from_base64 error={:?}", e);
+                println!("DiscogsKSAuth::from_utf8 error={:?}", e);
                 Err(hyper::error::Error::Header)
             }
         }
@@ -110,7 +103,7 @@ mod tests {
         }));
         assert_eq!(
             headers.to_string(),
-            "Authorization: Discogs a2V5PUFsYWRkaW4gc2VjcmV0PXNlc2FtZQ==\r\n".to_owned());
+            "Authorization: Discogs key=Aladdin secret=sesame\r\n".to_owned());
     }
 
     #[test]
@@ -120,7 +113,7 @@ mod tests {
             key: Some("Aladdin".to_owned()),
             secret: None
         }));
-        assert_eq!(headers.to_string(), "Authorization: Discogs a2V5PUFsYWRkaW4g\r\n".to_owned());
+        assert_eq!(headers.to_string(), "Authorization: Discogs key=Aladdin \r\n".to_owned());
     }
 
     #[test]
@@ -130,13 +123,13 @@ mod tests {
             key: None,
             secret: Some("sesame".to_owned())
         }));
-        assert_eq!(headers.to_string(), "Authorization: Discogs IHNlY3JldD1zZXNhbWU=\r\n".to_owned());
+        assert_eq!(headers.to_string(), "Authorization: Discogs  secret=sesame\r\n".to_owned());
     }
 
     #[test]
     fn test_discogsks_auth_parse() {
         let auth: Authorization<DiscogsKSAuth> = Header::parse_header(
-            &[b"Discogs a2V5PUFsYWRkaW4gc2VjcmV0PXNlc2FtZQ==".to_vec()])
+            &[b"Discogs key=Aladdin secret=sesame".to_vec()])
             .unwrap();
         assert_eq!(auth.0.key, Some("Aladdin".to_string()));
         assert_eq!(auth.0.secret, Some("sesame".to_string()));
@@ -145,7 +138,7 @@ mod tests {
     #[test]
     fn test_discogsks_auth_parse_no_secret() {
         let auth: Authorization<DiscogsKSAuth> = Header::parse_header(
-            &[b"Discogs a2V5PUFsYWRkaW4g".to_vec()])
+            &[b"Discogs key=Aladdin ".to_vec()])
             .unwrap();
         assert_eq!(auth.0.key, Some("Aladdin".to_string()));
         assert_eq!(auth.0.secret, None);
@@ -154,7 +147,7 @@ mod tests {
     #[test]
     fn test_discogsks_auth_parse_no_key() {
         let auth: Authorization<DiscogsKSAuth> = Header::parse_header(
-            &[b"Discogs IHNlY3JldD1zZXNhbWU=".to_vec()])
+            &[b"Discogs  secret=sesame".to_vec()])
             .unwrap();
         assert_eq!(auth.0.key, None);
         assert_eq!(auth.0.secret, Some("sesame".to_string()));

@@ -18,7 +18,6 @@ use std::any::Any;
 use std::fmt::{self, Display};
 use std::str::{FromStr, from_utf8};
 use std::ops::{Deref, DerefMut};
-use base64::{encode, decode};
 use hyper::header::*;
 use hyper;
 
@@ -34,7 +33,7 @@ impl Scheme for DiscogsTokenAuth {
 
     fn fmt_scheme(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let mut text: String = format!("token={}", self.token.clone());
-        f.write_str(&encode(text.as_ref()))
+        f.write_str(text.as_ref())
     }
 }
 
@@ -42,26 +41,20 @@ impl Scheme for DiscogsTokenAuth {
 impl FromStr for DiscogsTokenAuth {
     type Err = hyper::error::Error;
     fn from_str(s: &str) -> hyper::Result<DiscogsTokenAuth> {
-        match decode(s) {
-            Ok(decoded) => match String::from_utf8(decoded) {
-                Ok(text) => {
-                    let mut parts = &mut text.split('=');
-                    parts.next();
-                    let token = match parts.next() {
-                        Some(token_part) => token_part.to_owned(),
-                        None => return Err(hyper::error::Error::Header)
-                    };
-                    Ok(DiscogsTokenAuth {
-                        token: token,
-                    })
-                },
-                Err(e) => {
-                    println!("DiscogsTokenAuth::from_utf8 error={:?}", e);
-                    Err(hyper::error::Error::Header)
-                }
+        match String::from_utf8(s.into()) {
+            Ok(text) => {
+                let mut parts = &mut text.split('=');
+                parts.next();
+                let token = match parts.next() {
+                    Some(token_part) => token_part.to_owned(),
+                    None => return Err(hyper::error::Error::Header)
+                };
+                Ok(DiscogsTokenAuth {
+                    token: token,
+                })
             },
             Err(e) => {
-                println!("DiscogsTokenAuth::from_base64 error={:?}", e);
+                println!("DiscogsTokenAuth::from_utf8 error={:?}", e);
                 Err(hyper::error::Error::Header)
             }
         }
@@ -82,13 +75,13 @@ mod tests {
         }));
         assert_eq!(
             headers.to_string(),
-            "Authorization: Discogs dG9rZW49ZmdoY3ZrYmFza2osZGFic2Q=\r\n".to_owned());
+            "Authorization: Discogs token=fghcvkbaskj,dabsd\r\n".to_owned());
     }
 
     #[test]
     fn test_discogs_token_auth_parse() {
         let auth: Authorization<DiscogsTokenAuth> = Header::parse_header(
-            &[b"Discogs dG9rZW49ZmdoY3ZrYmFza2osZGFic2Q=".to_vec()])
+            &[b"Discogs token=fghcvkbaskj,dabsd".to_vec()])
             .unwrap();
         assert_eq!(auth.0.token, "fghcvkbaskj,dabsd".to_string());
     }

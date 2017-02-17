@@ -19,7 +19,6 @@
 extern crate hyper;
 extern crate serde_json;
 extern crate serde;
-extern crate base64;
 
 #[macro_use]
 extern crate serde_derive;

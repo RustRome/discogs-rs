@@ -17,6 +17,8 @@ use data_structures::*;
 
 #[cfg(test)]
 use mockito::SERVER_URL;
+#[cfg(test)]
+use super::*;
 
 #[cfg(test)]
 pub const API_URL: &'static str = mockito::SERVER_URL;

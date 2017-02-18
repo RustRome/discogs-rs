@@ -29,7 +29,3 @@ test_script:
     - copy target\debug\cargo-clippy.exe C:\Users\appveyor\.cargo\bin\
     - cargo clippy -- -D clippy
     - cd clippy_lints && cargo clippy -- -D clippy && cd ..
-
-notifications:
-    - provider: Email
-on_build_success: false

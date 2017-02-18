@@ -113,7 +113,22 @@ impl Discogs {
                                 self.user_agent.clone())
     }
 
-
+    /// Returns an instance of the `LabelQueryBuilder` structure for the specified id
+    /// This allows you to pass parameters to build a request.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::Discogs;
+    ///
+    /// let artist = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    ///                       .label(1234);
+    /// ```
+    pub fn label(&mut self, id: u32) -> LabelQueryBuilder {
+        LabelQueryBuilder::new(id,
+                                self.api_endpoint.clone(),
+                                self.user_agent.clone())
+    }
 }
 
 #[cfg(test)]

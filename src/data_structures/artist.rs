@@ -56,7 +56,7 @@ impl Artist {
     ///                          "name".to_string(),
     ///                          "resource_url".to_string());
     /// ```
-    pub fn new(id: u32,name: String, resource_url: String) -> Artist {
+    pub fn new(id: u32, name: String, resource_url: String) -> Artist {
          Artist {
             id: id,
             name: name,

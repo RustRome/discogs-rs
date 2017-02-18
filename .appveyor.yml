@@ -9,6 +9,7 @@ environment:
       secure: 5A5HsULz0KE/fBxQbYNV4CALK8hdp210Z1KT7dZmR4wPrJtT3gEHR0fWvexJiEuk
     DISCOGS_USER_AGENT:
       secure: aCqh76lO4yt6Ct5H+jRiPlP0oaY3S9kgHxd+DWidPgg=
+    RUST_THREADS: 1
     global:
         PROJECT_NAME: discogs-rs
     matrix:

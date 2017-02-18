@@ -146,6 +146,23 @@ impl Discogs {
                                  self.api_endpoint.clone(),
                                  self.user_agent.clone())
     }
+
+    /// Returns an instance of the `MasterQueryBuilder` structure for the specified id
+    /// This allows you to pass parameters to build a request.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::Discogs;
+    ///
+    /// let master = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    ///                       .master(1234);
+    /// ```
+    pub fn master(&mut self, id: u32) -> MasterQueryBuilder {
+        MasterQueryBuilder::new(id,
+                                 self.api_endpoint.clone(),
+                                 self.user_agent.clone())
+    }
 }
 
 #[cfg(test)]

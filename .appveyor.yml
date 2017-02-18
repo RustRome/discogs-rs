@@ -4,7 +4,7 @@ platform:
 
 environment:
     DISCOGS_CLIENT_KEY:
-      secure: SBsosj2ScnrHyUEYqEdcgdiTkf4Ol26GcibU0s1
+      secure: SBsosj2ScnrHyUEYqEdcgdiTkf4Ol26GcibU0s1/sEU=
     DISCOGS_CLIENT_SECRET:
       secure: 5A5HsULz0KE/fBxQbYNV4CALK8hdp210Z1KT7dZmR4wPrJtT3gEHR0fWvexJiEuk
     DISCOGS_USER_AGENT:

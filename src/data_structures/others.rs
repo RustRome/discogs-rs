@@ -15,7 +15,7 @@
 
 use data_structures::*;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Community {
     pub contributors: Vec<Contributor>,
     pub data_quality: String,
@@ -26,14 +26,14 @@ pub struct Community {
     pub want: u32,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Rating {
     pub average: f32,
     pub count: u32,
 }
 
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ReleaseFormat {
     pub descriptions: Vec<String>,
     pub name: String,
@@ -41,7 +41,7 @@ pub struct ReleaseFormat {
 }
 
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Identifier {
     // TODO: can we do an enum for this?
     #[serde(rename = "type")]
@@ -50,7 +50,7 @@ pub struct Identifier {
 }
 
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Track {
     pub duration: String,
     pub position: String,
@@ -59,7 +59,7 @@ pub struct Track {
     pub extra_artists: Option<Vec<Artist>>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Video {
     pub description: String,
     pub duration: u32,
@@ -68,12 +68,12 @@ pub struct Video {
     pub uri: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub enum Status {
     Accepted,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub enum DataQuality {
     Correct,
     #[serde(rename="Needs Vote")]

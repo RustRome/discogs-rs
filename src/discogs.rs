@@ -121,13 +121,30 @@ impl Discogs {
     /// ```
     /// use discogs::Discogs;
     ///
-    /// let artist = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    /// let label = Discogs::new(env!("DISCOGS_USER_AGENT"))
     ///                       .label(1234);
     /// ```
     pub fn label(&mut self, id: u32) -> LabelQueryBuilder {
         LabelQueryBuilder::new(id,
-                                self.api_endpoint.clone(),
-                                self.user_agent.clone())
+                               self.api_endpoint.clone(),
+                               self.user_agent.clone())
+    }
+
+    /// Returns an instance of the `ReleaseQueryBuilder` structure for the specified id
+    /// This allows you to pass parameters to build a request.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::Discogs;
+    ///
+    /// let release = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    ///                       .label(1234);
+    /// ```
+    pub fn release(&mut self, id: u32) -> ReleaseQueryBuilder {
+        ReleaseQueryBuilder::new(id,
+                                 self.api_endpoint.clone(),
+                                 self.user_agent.clone())
     }
 }
 

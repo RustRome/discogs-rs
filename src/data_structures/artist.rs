@@ -21,7 +21,7 @@ use serde_json;
 const ARTIST_ENDPOINT: &'static str = "/artists";
 
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Artist {
     pub id: u32,
     pub name: String,

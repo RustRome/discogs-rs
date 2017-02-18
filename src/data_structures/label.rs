@@ -20,7 +20,7 @@ use serde_json;
 /// The default host address for the API.
 const LABEL_ENDPOINT: &'static str = "/labels";
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Label {
     pub id: u32,
     pub resource_url: String,

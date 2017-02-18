@@ -15,7 +15,7 @@
 
 use data_structures::*;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Master {
     // Mandatory fields
     pub id: u32,

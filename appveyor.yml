@@ -24,8 +24,8 @@ install:
 build: false
 
 test_script:
-    - cargo build --features debugging
-    - cargo test --features debugging
+    - cargo build
+    - cargo test
     - copy target\debug\cargo-clippy.exe C:\Users\appveyor\.cargo\bin\
     - cargo clippy -- -D clippy
     - cd clippy_lints && cargo clippy -- -D clippy && cd ..

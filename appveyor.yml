@@ -5,13 +5,13 @@ platform:
 environment:
     global:
         PROJECT_NAME: discogs-rs
-  matrix:
-    - TOOLCHAIN_VERSION: 14.0
-      RUST: stable
-    - TOOLCHAIN_VERSION: 14.0
-      RUST: beta
-    - TOOLCHAIN_VERSION: 14.0
-      RUST: nightly
+    matrix:
+      - TOOLCHAIN_VERSION: 14.0
+        RUST: stable
+      - TOOLCHAIN_VERSION: 14.0
+        RUST: beta
+      - TOOLCHAIN_VERSION: 14.0
+        RUST: nightly
 
 
 install:

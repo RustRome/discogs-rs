@@ -13,12 +13,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-use hyper::Client;
-use hyper::header::UserAgent;
-use std::io::Read;
-use hyper::status::StatusCode;
 use data_structures::*;
-use super::*;
+
 #[cfg(test)]
 use mockito::SERVER_URL;
 

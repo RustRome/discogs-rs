@@ -14,10 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::any::Any;
-use std::fmt::{self, Display};
-use std::str::{FromStr, from_utf8};
-use std::ops::{Deref, DerefMut};
+use std::fmt;
+use std::str::FromStr;
 use hyper::header::*;
 use hyper;
 
@@ -32,7 +30,7 @@ impl Scheme for DiscogsTokenAuth {
     }
 
     fn fmt_scheme(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let mut text: String = format!("token={}", self.token.clone());
+        let text: String = format!("token={}", self.token.clone());
         f.write_str(text.as_ref())
     }
 }

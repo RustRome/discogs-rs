@@ -14,10 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::any::Any;
-use std::fmt::{self, Display};
-use std::str::{FromStr, from_utf8};
-use std::ops::{Deref, DerefMut};
+use std::fmt;
+use std::str::FromStr;
 use hyper::header::*;
 use hyper;
 

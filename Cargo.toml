@@ -1,6 +1,6 @@
 [package]
 name = "discogs"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Afonso Bordado <afonsobordado@az8.co>"]
 description = "A Library to consume Discogs API"
 keywords = ["discogs", "api", "client"]

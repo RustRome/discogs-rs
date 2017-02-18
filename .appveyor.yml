@@ -4,11 +4,11 @@ platform:
 
 environment:
     DISCOGS_CLIENT_KEY:
-      secret: SBsosj2ScnrHyUEYqEdcgdiTkf4Ol26GcibU0s1
+      secure: SBsosj2ScnrHyUEYqEdcgdiTkf4Ol26GcibU0s1
     DISCOGS_CLIENT_SECRET:
-      secret: 5A5HsULz0KE/fBxQbYNV4CALK8hdp210Z1KT7dZmR4wPrJtT3gEHR0fWvexJiEuk
+      secure: 5A5HsULz0KE/fBxQbYNV4CALK8hdp210Z1KT7dZmR4wPrJtT3gEHR0fWvexJiEuk
     DISCOGS_USER_AGENT:
-      secret: aCqh76lO4yt6Ct5H+jRiPlP0oaY3S9kgHxd+DWidPgg=
+      secure: aCqh76lO4yt6Ct5H+jRiPlP0oaY3S9kgHxd+DWidPgg=
     global:
         PROJECT_NAME: discogs-rs
     matrix:

@@ -22,7 +22,9 @@ mod company;
 mod image;
 mod master;
 mod others;
+mod artist_releases;
 
+pub use self::artist_releases::*;
 pub use self::artist::*;
 pub use self::contributor::*;
 pub use self::label::*;

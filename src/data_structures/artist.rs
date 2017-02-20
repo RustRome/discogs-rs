@@ -18,7 +18,7 @@ use query::*;
 use serde_json;
 
 /// The default host address for the API.
-const ARTIST_ENDPOINT: &'static str = "/artists";
+pub const ARTIST_ENDPOINT: &'static str = "/artists";
 
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -151,6 +151,20 @@ impl ArtistQueryBuilder {
                 });
             }
         }
+    }
+    /// Returns an instance of the `ArtistReleasesQueryBuilder` structure for the specified id
+    /// This allows you to pass parameters to build a request.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::Discogs;
+    ///
+    /// let releases = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    ///                       .artist(1234).releases();
+    /// ```
+    pub fn releases(&self) -> ArtistReleasesQueryBuilder {
+        ArtistReleasesQueryBuilder::new(self.id,self.api_endpoint.clone(),self.user_agent.clone())
     }
 }
 

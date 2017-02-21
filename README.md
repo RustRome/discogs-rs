@@ -20,8 +20,8 @@ The API is slowly becoming more stabilized and probably won't change very much.
       - [x] Artist
         - [x] Get Releases
       - [ ] Search
-	- [ ] Search Tests
-	- [ ] Search real world tests
+        - [ ] Search Tests
+        - [ ] Search real world tests
         - [x] Perform search
         - [x] Implement filters
     - [ ] Users

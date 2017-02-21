@@ -19,6 +19,8 @@ use query::*;
 use hyper;
 use hyper::header::*;
 use hyper::status::StatusCode;
+use hyper::net::HttpsConnector;
+use hyper_native_tls::NativeTlsClient;
 use std::io::Read;
 
 pub trait QueryBuilder {
@@ -37,7 +39,9 @@ pub trait QueryBuilder {
 
     //TODO: Fix the unwrap()
     fn perform_request(&self) -> Result<String, QueryError> {
-        let client = hyper::Client::new();
+        let ssl = NativeTlsClient::new().unwrap();
+        let connector = HttpsConnector::new(ssl);
+        let client = hyper::Client::with_connector(connector);
         let response = client.get(self.get_query_url().as_str())
                              .header(UserAgent(self.get_user_agent()))
                              .header(Authorization(DiscogsKSAuth {

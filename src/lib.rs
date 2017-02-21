@@ -17,6 +17,7 @@
 #![doc(test(attr(allow(unused_variables), deny(warnings))))]
 
 extern crate hyper;
+extern crate hyper_native_tls;
 extern crate serde;
 
 #[cfg(test)]

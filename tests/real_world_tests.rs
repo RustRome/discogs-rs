@@ -52,7 +52,6 @@ fn test_https_request() {
     use hyper::Client;
     use hyper::net::HttpsConnector;
     use hyper_native_tls::NativeTlsClient;
-    use std::io::Read;
 
     let ssl = NativeTlsClient::new().unwrap();
     let connector = HttpsConnector::new(ssl);

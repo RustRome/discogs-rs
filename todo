@@ -1,0 +1,7 @@
+Make it so that we can use discogs and other data structures like so
+
+Discogs::new()
+	.key()
+	.secret()
+
+instead of the current way

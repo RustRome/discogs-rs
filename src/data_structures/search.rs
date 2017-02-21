@@ -421,6 +421,13 @@ impl SearchQueryBuilder {
     ///                                       .get();
     /// ```
     pub fn get(&self) -> Result<Vec<SearchResult>, QueryError> {
+        if self.key.is_none() || self.secret.is_none() {
+            return Err(QueryError::AuthenticationMissingError {
+                reason: "Missing either key or secret when perfoming search request".to_string(),
+            })
+        }
+
+
         let result: Result<String, QueryError> = self.perform_request();
 
         if let Err(error) = result {

@@ -33,6 +33,3 @@ build: false
 test_script:
     - cargo build
     - cargo test --test real_world_tests
-    - copy target\debug\cargo-clippy.exe C:\Users\appveyor\.cargo\bin\
-    - cargo clippy -- -D clippy
-    - cd clippy_lints && cargo clippy -- -D clippy && cd ..

@@ -25,16 +25,17 @@ const RELEASE_ENDPOINT: &'static str = "/releases";
 pub struct Release {
     pub title: String,
     pub id: u32,
-    pub released: String,
-    pub released_formatted: String,
-    pub resource_url: String,
-    pub date_added: String,
-    pub date_changed: String,
-    pub uri: String,
-    pub year: u32,
-    pub artists: Vec<Artist>,
     pub status: Status,
+    pub resource_url: String,
+    pub year: u32,
 
+    pub artists: Option<Vec<Artist>>,
+    pub artist: Option<String>,
+    pub uri: Option<String>,
+    pub released: Option<String>,
+    pub released_formatted: Option<String>,
+    pub date_added: Option<String>,
+    pub date_changed: Option<String>,
     pub data_quality: Option<DataQuality>,
     pub thumb: Option<String>,
     pub community: Option<Community>,
@@ -48,6 +49,7 @@ pub struct Release {
     pub identifiers: Option<Vec<Identifier>>,
     pub images: Option<Vec<Image>>,
     pub labels: Option<Vec<Label>>,
+    pub label: Option<String>,
     pub lowest_price: Option<f64>,
     pub master_id: Option<u32>,
     pub master_url: Option<String>,
@@ -98,16 +100,16 @@ impl Release {
         Release {
             id: id,
             title: title,
-            released: released,
-            released_formatted: released_formatted,
+            released: Some(released),
+            released_formatted: Some(released_formatted),
             resource_url: resource_url,
-            date_added: date_added,
-            date_changed: date_changed,
-            uri: uri,
+            date_added: Some(date_added),
+            date_changed: Some(date_changed),
+            uri: Some(uri),
             year: year,
-            artists: artists,
+            artists: Some(artists),
+            artist : None,
             status: status,
-
             data_quality: None,
             thumb: None,
             community: None,
@@ -120,6 +122,7 @@ impl Release {
             genres: None,
             identifiers: None,
             images: None,
+            label : None,
             labels: None,
             lowest_price: None,
             master_id: None,
@@ -267,18 +270,18 @@ mod tests {
 
         assert_eq!(release.id, 128);
         assert_eq!(release.title, "title".to_string());
-        assert_eq!(release.released, "released".to_string());
-        assert_eq!(release.released_formatted, "released_formatted".to_string());
+        assert_eq!(release.released, Some("released".to_string()));
+        assert_eq!(release.released_formatted, Some("released_formatted".to_string()));
         assert_eq!(release.resource_url, "resource_url".to_string());
-        assert_eq!(release.date_added, "date_added".to_string());
-        assert_eq!(release.date_changed, "date_changed".to_string());
-        assert_eq!(release.uri, "uri".to_string());
+        assert_eq!(release.date_added, Some("date_added".to_string()));
+        assert_eq!(release.date_changed, Some("date_changed".to_string()));
+        assert_eq!(release.uri, Some("uri".to_string()));
         assert_eq!(release.year, 2000);
-        assert_eq!(release.artists, vec![
+        assert_eq!(release.artists, Some(vec![
                    Artist::new(1,
                                "name".to_string(),
                                "resource_url".to_string())
-        ]);
+        ]));
         assert_eq!(release.status, Status::Accepted);
     }
 
@@ -334,18 +337,18 @@ mod tests {
 
                 assert_eq!(release.id, 128);
                 assert_eq!(release.title, "title".to_string());
-                assert_eq!(release.released, "released".to_string());
-                assert_eq!(release.released_formatted, "released_formatted".to_string());
+                assert_eq!(release.released, Some("released".to_string()));
+                assert_eq!(release.released_formatted, Some("released_formatted".to_string()));
                 assert_eq!(release.resource_url, "resource_url".to_string());
-                assert_eq!(release.date_added, "date_added".to_string());
-                assert_eq!(release.date_changed, "date_changed".to_string());
-                assert_eq!(release.uri, "uri".to_string());
+                assert_eq!(release.date_added, Some("date_added".to_string()));
+                assert_eq!(release.date_changed, Some("date_changed".to_string()));
+                assert_eq!(release.uri, Some("uri".to_string()));
                 assert_eq!(release.year, 2000);
-                assert_eq!(release.artists, vec![
+                assert_eq!(release.artists, Some(vec![
                            Artist::new(1,
                                        "name".to_string(),
                                        "resource_url".to_string())
-                ]);
+                ]));
                 assert_eq!(release.status, Status::Accepted);
             });
     }

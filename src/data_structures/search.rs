@@ -17,6 +17,7 @@ use data_structures::*;
 use query::*;
 use serde_json;
 use std::collections::HashMap;
+use itertools::Itertools;
 
 /// The default API Endpoint
 const SEARCH_ENDPOINT: &'static str = "/database";
@@ -44,6 +45,13 @@ pub enum SearchType {
     Label,
     Release
 }
+
+#[derive(Deserialize, Debug)]
+struct SearchResultFull {
+    pub pagination: Pagination,
+    pub results: Vec<SearchResult>,
+}
+
 
 impl SearchType {
     pub fn to_string(&self) -> String {
@@ -401,35 +409,37 @@ impl SearchQueryBuilder {
         self
     }
 
-    ///// Perform request
-    /////
-    ///// # Examples
-    /////
-    ///// ```
-    ///// use discogs::data_structures::SearchQueryBuilder;
-    /////
-    ///// let search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    /////                                      env!("DISCOGS_USER_AGENT").to_string())
-    /////                                       .get();
-    ///// ```
-    //pub fn get(&self) -> Result<Vec<SearchResult>, QueryError> {
-    //    let result: Result<String, QueryError> = self.perform_request();
+    /// Perform request
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::data_structures::SearchQueryBuilder;
+    ///
+    /// let search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                      env!("DISCOGS_USER_AGENT").to_string())
+    ///                                       .get();
+    /// ```
+    pub fn get(&self) -> Result<Vec<SearchResult>, QueryError> {
+        let result: Result<String, QueryError> = self.perform_request();
 
-    //    if let Err(error) = result {
-    //        return Err(error);
-    //    } else {
-    //        let result_string = result.ok().unwrap();
-    //        let json = serde_json::from_str(&result_string);
+        if let Err(error) = result {
+            return Err(error);
+        } else {
+            let result_string = result.ok().unwrap();
+            let result: Result<SearchResultFull, serde_json::Error> =
+                serde_json::from_str(&result_string);
 
-    //        if let Ok(artist) = json {
-    //            return Ok(artist);
-    //        } else {
-    //            return Err(QueryError::JsonDecodeError {
-    //                serde_err: json.err()
-    //            });
-    //        }
-    //    }
-    //}
+            if let Ok(srf) = result {
+                return Ok(srf.results);
+            } else {
+                return Err(QueryError::JsonDecodeError {
+                    serde_err: result.err()
+                });
+            }
+
+        }
+    }
 }
 
 impl QueryBuilder for SearchQueryBuilder {
@@ -459,8 +469,7 @@ impl QueryBuilder for SearchQueryBuilder {
                 self.parameters.iter()
                                .filter(|&(p, _)| p != "query")
                                .map(|(p, v)| format!("{}={},", p, v))
-                               // We need to make this intersperse work
-                               //.intersperse(",".to_string())
+                               .intersperse(",".to_string())
                                .collect::<String>()
                                .as_str());
         }

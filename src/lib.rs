@@ -20,14 +20,12 @@ extern crate hyper;
 extern crate hyper_native_tls;
 extern crate serde;
 
+#[macro_use] extern crate serde_json;
+#[macro_use] extern crate serde_derive;
+#[macro_use] extern crate itertools;
+
 #[cfg(test)]
 extern crate mockito;
-
-#[macro_use]
-extern crate serde_json;
-
-#[macro_use]
-extern crate serde_derive;
 
 pub mod pagination;
 pub mod data_structures;

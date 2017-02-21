@@ -14,6 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 extern crate discogs;
+extern crate hyper;
+extern crate hyper_native_tls;
 
 use discogs::Discogs;
 
@@ -41,4 +43,20 @@ fn test_request_artist() {
             panic!();
         }
     }
+}
+
+
+/// This test tests the use of ssl with hyper
+#[test]
+fn test_https_request() {
+    use hyper::Client;
+    use hyper::net::HttpsConnector;
+    use hyper_native_tls::NativeTlsClient;
+    use std::io::Read;
+
+    let ssl = NativeTlsClient::new().unwrap();
+    let connector = HttpsConnector::new(ssl);
+    let client = Client::with_connector(connector);
+
+    client.get("https://google.com").send().unwrap();
 }

@@ -22,6 +22,7 @@ mod company;
 mod image;
 mod master;
 mod pagination;
+mod search;
 mod others;
 
 
@@ -34,5 +35,6 @@ pub use self::company::*;
 pub use self::image::*;
 pub use self::master::*;
 pub use self::pagination::*;
+pub use self::search::*;
 pub use self::others::*;
 

@@ -37,6 +37,8 @@ The API is slowly becoming more stabilized and probably won't change very much.
       - [ ] Fee
       - [ ] Price Suggestions
 
+ - [ ] Search Tests
+ - [ ] Handle query error codes that are not 200
  - [ ] Write better tests
  - [ ] Fully document all files
  - [ ] Write some example code

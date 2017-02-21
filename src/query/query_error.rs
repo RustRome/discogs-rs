@@ -23,6 +23,9 @@ use std;
 // TODO: Document when these errors would occur
 #[derive(Debug)]
 pub enum QueryError {
+    AuthenticationMissingError {
+        reason: String,
+    },
     JsonDecodeError {
         serde_err: Option<serde_json::Error>
     },

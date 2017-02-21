@@ -21,10 +21,11 @@ mod release;
 mod company;
 mod image;
 mod master;
+mod pagination;
 mod others;
-mod artist_releases;
 
-pub use self::artist_releases::*;
+
+
 pub use self::artist::*;
 pub use self::contributor::*;
 pub use self::label::*;
@@ -32,4 +33,6 @@ pub use self::release::*;
 pub use self::company::*;
 pub use self::image::*;
 pub use self::master::*;
+pub use self::pagination::*;
 pub use self::others::*;
+

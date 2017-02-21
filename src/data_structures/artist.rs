@@ -21,6 +21,13 @@ use serde_json;
 pub const ARTIST_ENDPOINT: &'static str = "/artists";
 
 
+
+#[derive(Deserialize, Debug)]
+pub struct ArtistReleases {
+    pub pagination: Pagination,
+    pub releases: Vec<Release>,
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Artist {
     pub id: u32,
@@ -98,6 +105,10 @@ pub struct ArtistQueryBuilder {
     // Optional key and secret if necessary
     key: Option<String>,
     secret: Option<String>,
+
+    page: i16,
+    per_page: i16,
+    releases : bool
 }
 
 impl ArtistQueryBuilder {
@@ -118,7 +129,10 @@ impl ArtistQueryBuilder {
             api_endpoint: api_endpoint,
             user_agent: user_agent,
             key: None,
-            secret: None
+            secret: None,
+            page : 1,
+            per_page : 50,
+            releases : false
         }
     }
 
@@ -152,6 +166,12 @@ impl ArtistQueryBuilder {
             }
         }
     }
+
+    pub fn pagination(&mut self, page: i16, per_page: i16) -> &mut ArtistQueryBuilder {
+        self.page = page;
+        self.per_page = per_page;
+        self
+    }
     /// Returns an instance of the `ArtistReleasesQueryBuilder` structure for the specified id
     /// This allows you to pass parameters to build a request.
     ///
@@ -161,11 +181,31 @@ impl ArtistQueryBuilder {
     /// use discogs::Discogs;
     ///
     /// let releases = Discogs::new(env!("DISCOGS_USER_AGENT"))
-    ///                       .artist(1234).releases();
+    ///                       .artist(1234).get_releases();
     /// ```
-    pub fn releases(&self) -> ArtistReleasesQueryBuilder {
-        ArtistReleasesQueryBuilder::new(self.id,self.api_endpoint.clone(),self.user_agent.clone())
+    pub fn get_releases(&mut self) -> Result<ArtistReleases, QueryError> {
+
+        self.releases = true;
+
+        let result: Result<String, QueryError> = self.perform_request();
+
+        if let Err(error) = result {
+            return Err(error);
+        } else {
+            let result_string = result.ok().unwrap();
+            let json = serde_json::from_str(&result_string);
+
+            if let Ok(artist) = json {
+                return Ok(artist);
+            } else {
+                return Err(QueryError::JsonDecodeError {
+                    serde_err: json.err()
+                });
+            }
+        }
     }
+
+
 }
 
 impl QueryBuilder for ArtistQueryBuilder {
@@ -178,8 +218,14 @@ impl QueryBuilder for ArtistQueryBuilder {
     }
 
     fn get_query_url(&self) -> String {
-        format!("{}{}/{}", self.api_endpoint, ARTIST_ENDPOINT, self.id)
+
+        match self.releases {
+            false => format!("{}{}/{}", self.api_endpoint, ARTIST_ENDPOINT, self.id),
+            true => format!("{}{}/{}/releases?page={}&per_page={}", self.api_endpoint, ARTIST_ENDPOINT, self.id, self.page, self.per_page)
+        }
+
     }
+
 
     fn get_user_agent(&self) -> String {
         self.user_agent.clone()
@@ -252,6 +298,78 @@ mod tests {
                 assert_eq!(artist.id, 4567);
                 assert_eq!(artist.resource_url, "https://api.discogs.com/artists/4567".to_string());
                 assert_eq!(artist.name, "Whirlpool Productions".to_string());
+            });
+    }
+
+    #[test]
+    fn test_perform_artist_releases_request() {
+        mock("GET", "/artists/4567/releases?page=1&per_page=2")
+            .with_status(200)
+            .with_header("content-type", "text/json")
+            .with_body(to_string(&json!(
+            {
+            "pagination": {
+                "per_page": 2,
+                "items": 220,
+                "page": 1,
+                "urls": {
+                    "last": "https://api.discogs.com/artists/4567/releases?per_page=2&page=110",
+                    "next": "https://api.discogs.com/artists/4567/releases?per_page=2&page=2"
+                },
+                "pages": 110
+            },
+            "releases": [{
+                "status": "Accepted",
+                "thumb": "",
+                "title": "Fly High",
+                "format": "12\"",
+                "label": "5th & Madison",
+                "role": "Main",
+                "year": 1992,
+                "resource_url": "https://api.discogs.com/releases/843401",
+                "artist": "Whirlpool*",
+                "type": "release",
+                "id": 843401
+            }, {
+                "status": "Accepted",
+                "thumb": "",
+                "title": "Dream Team E.P.",
+                "format": "12\", EP",
+                "label": "Intense Recordings",
+                "role": "Main",
+                "year": 1993,
+                "resource_url": "https://api.discogs.com/releases/94983",
+                "artist": "T'N'I / Whirlpool Productions",
+                "type": "release",
+                "id": 94983
+            }]
+            }
+            )).unwrap().as_str())
+            .create_for(|| {
+                let mut releases = Discogs::new(env!("DISCOGS_USER_AGENT"))
+                    .artist(4567)
+                    .pagination(1, 2)
+                    .get_releases()
+                    .ok()
+                    .unwrap();
+
+
+
+                assert_eq!(releases.pagination.page,1);
+                assert_eq!(releases.pagination.per_page,2);
+                assert_eq!(releases.pagination.items,220);
+                assert_eq!(releases.pagination.pages,110);
+
+
+                assert_eq!(releases.releases.len(), 2);
+
+                assert_eq!(releases.releases[0].title, "Fly High");
+                assert_eq!(releases.releases[0].id, 843401);
+                assert_eq!(releases.releases[0].resource_url, "https://api.discogs.com/releases/843401");
+                assert_eq!(releases.releases[0].artist, Some(String::from("Whirlpool*")));
+                assert_eq!(releases.releases[0].label, Some(String::from("5th & Madison")));
+
+
             });
     }
 }

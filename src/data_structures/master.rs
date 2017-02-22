@@ -138,7 +138,7 @@ impl MasterQueryBuilder {
     ///
     /// # Examples
     ///
-    /// ```
+    /// ```rust,no_run
     /// use discogs::data_structures::MasterQueryBuilder;
     ///
     /// let master = MasterQueryBuilder::new(7896,

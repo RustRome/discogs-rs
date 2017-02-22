@@ -454,7 +454,7 @@ impl SearchQueryBuilder {
     ///
     /// # Examples
     ///
-    /// ```
+    /// ```rust,no_run
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),

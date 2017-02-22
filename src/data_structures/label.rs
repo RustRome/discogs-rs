@@ -120,7 +120,7 @@ impl LabelQueryBuilder {
     ///
     /// # Examples
     ///
-    /// ```
+    /// ```rust,no_run
     /// use discogs::Discogs;
     ///
     /// let label = Discogs::new("USER_AGENT")

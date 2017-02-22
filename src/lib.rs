@@ -27,7 +27,6 @@ extern crate serde;
 #[cfg(test)]
 extern crate mockito;
 
-pub mod pagination;
 pub mod data_structures;
 pub mod query;
 pub mod discogs;

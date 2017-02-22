@@ -108,7 +108,9 @@ impl Discogs {
     pub fn artist(&mut self, id: u32) -> ArtistQueryBuilder {
         ArtistQueryBuilder::new(id,
                                 self.api_endpoint.clone(),
-                                self.user_agent.clone())
+                                self.user_agent.clone(),
+                                self.key.clone(),
+                                self.secret.clone())
     }
 
     /// Returns an instance of the `LabelQueryBuilder` structure for the specified id
@@ -125,7 +127,9 @@ impl Discogs {
     pub fn label(&mut self, id: u32) -> LabelQueryBuilder {
         LabelQueryBuilder::new(id,
                                self.api_endpoint.clone(),
-                               self.user_agent.clone())
+                               self.user_agent.clone(),
+                               self.key.clone(),
+                               self.secret.clone())
     }
 
     /// Returns an instance of the `ReleaseQueryBuilder` structure for the specified id
@@ -142,7 +146,9 @@ impl Discogs {
     pub fn release(&mut self, id: u32) -> ReleaseQueryBuilder {
         ReleaseQueryBuilder::new(id,
                                  self.api_endpoint.clone(),
-                                 self.user_agent.clone())
+                                 self.user_agent.clone(),
+                                 self.key.clone(),
+                                 self.secret.clone())
     }
 
     /// Returns an instance of the `MasterQueryBuilder` structure for the specified id
@@ -159,7 +165,9 @@ impl Discogs {
     pub fn master(&mut self, id: u32) -> MasterQueryBuilder {
         MasterQueryBuilder::new(id,
                                  self.api_endpoint.clone(),
-                                 self.user_agent.clone())
+                                 self.user_agent.clone(),
+                                 self.key.clone(),
+                                 self.secret.clone())
     }
 
     /// Returns an instance of the `SearchQueryBuilder` structure.
@@ -175,7 +183,9 @@ impl Discogs {
     /// ```
     pub fn search(&mut self) -> SearchQueryBuilder {
         SearchQueryBuilder::new(self.api_endpoint.clone(),
-                                 self.user_agent.clone())
+                                 self.user_agent.clone(),
+                                 self.key.clone(),
+                                 self.secret.clone())
     }
 }
 

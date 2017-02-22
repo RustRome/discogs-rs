@@ -167,15 +167,21 @@ impl ReleaseQueryBuilder {
     ///
     /// let rqb = ReleaseQueryBuilder::new(128,
     ///                                   discogs::API_URL.to_string(),
-    ///                                   "USER_AGENT".to_string().to_string());
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   "CLIENT_KEY".to_string(),
+    ///                                   "CLIENT_SECRET".to_string());
     /// ```
-    pub fn new(id: u32, api_endpoint: String, user_agent: String) -> ReleaseQueryBuilder {
+    pub fn new(id: u32,
+               api_endpoint: String,
+               user_agent: String,
+               key: Option<String>,
+               secret: Option<String>) -> ReleaseQueryBuilder {
         ReleaseQueryBuilder {
             id: id,
             api_endpoint: api_endpoint,
             user_agent: user_agent,
-            key: None,
-            secret: None
+            key: key,
+            secret:secret
         }
     }
 
@@ -188,7 +194,7 @@ impl ReleaseQueryBuilder {
     ///
     /// let release = ReleaseQueryBuilder::new(128,
     ///                                  discogs::API_URL.to_string(),
-    ///                                  "USER_AGENT".to_string().to_string())
+    ///                                  "USER_AGENT".to_string())
     ///                                  .get();
     /// ```
     pub fn get(&self) -> Result<Release, QueryError> {

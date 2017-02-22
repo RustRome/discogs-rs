@@ -6,6 +6,13 @@ rust:
 os:
   - linux
 
+script:
+  - cargo build --verbose
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then cargo test --verbose --lib; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then cargo test --verbose --doc; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then cargo test --verbose; fi'
+
+
 matrix:
   fast_finish: true
 env:

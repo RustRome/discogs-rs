@@ -36,6 +36,7 @@ impl Scheme for DiscogsKSAuth {
         if let Some(key) = self.key.clone() {
             text.push_str(format!("key={}", key).as_str());
         }
+        text.push(',');
         text.push(' ');
         if let Some(secret) = self.secret.clone() {
             text.push_str(format!("secret={}", secret).as_str());
@@ -45,6 +46,7 @@ impl Scheme for DiscogsKSAuth {
 }
 
 //TODO: Make a neater implementation of this
+//TODO: This parser currently doesent handle the ", " that happens in the middle of the aut request
 impl FromStr for DiscogsKSAuth {
     type Err = hyper::error::Error;
     fn from_str(s: &str) -> hyper::Result<DiscogsKSAuth> {
@@ -101,7 +103,7 @@ mod tests {
         }));
         assert_eq!(
             headers.to_string(),
-            "Authorization: Discogs key=Aladdin secret=sesame\r\n".to_owned());
+            "Authorization: Discogs key=Aladdin, secret=sesame\r\n".to_owned());
     }
 
     #[test]
@@ -111,7 +113,7 @@ mod tests {
             key: Some("Aladdin".to_owned()),
             secret: None
         }));
-        assert_eq!(headers.to_string(), "Authorization: Discogs key=Aladdin \r\n".to_owned());
+        assert_eq!(headers.to_string(), "Authorization: Discogs key=Aladdin, \r\n".to_owned());
     }
 
     #[test]
@@ -121,7 +123,7 @@ mod tests {
             key: None,
             secret: Some("sesame".to_owned())
         }));
-        assert_eq!(headers.to_string(), "Authorization: Discogs  secret=sesame\r\n".to_owned());
+        assert_eq!(headers.to_string(), "Authorization: Discogs , secret=sesame\r\n".to_owned());
     }
 
     #[test]

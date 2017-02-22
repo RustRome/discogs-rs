@@ -23,13 +23,16 @@ fn build_discogs() -> Discogs {
     let mut d = Discogs::new(env!("DISCOGS_USER_AGENT"));
 
     d.key(env!("DISCOGS_CLIENT_KEY"))
-     .secret(env!("DISCOGS_CLIENT_KEY"));
+     .secret(env!("DISCOGS_CLIENT_SECRET"));
 
     d
 }
 
 #[test]
 fn test_search() {
+    use discogs::query::QueryError::HyperStatusError;
+    use std::io::Read;
+
     let mut client = build_discogs();
 
     let search_res = client.search()
@@ -42,7 +45,19 @@ fn test_search() {
             println!("{:?}", search_ok);
         },
         Err(search_err) => {
-            println!("{:?}", search_err);
+
+            match search_err {
+                HyperStatusError {
+                    mut response
+                } => {
+                    let mut r: String = "".to_string();
+                    response.read_to_string(&mut r);
+
+                    println!("{:?}", r);
+                },
+                _ => println!("{:?}", search_err)
+            }
+
             panic!();
         }
     }

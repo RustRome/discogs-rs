@@ -5,3 +5,7 @@ Discogs::new()
 	.secret()
 
 instead of the current way
+
+
+Search Tests
+Search real world tests

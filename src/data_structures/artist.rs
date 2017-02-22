@@ -146,7 +146,7 @@ impl ArtistQueryBuilder {
     ///
     /// # Examples
     ///
-    /// ```
+    /// ```rust,no_run
     /// use discogs::Discogs;
     ///
     /// let releases = Discogs::new("USER_AGENT")
@@ -177,12 +177,11 @@ impl ArtistQueryBuilder {
         self.per_page = per_page;
         self
     }
-    /// Returns an instance of the `ArtistReleasesQueryBuilder` structure for the specified id
-    /// This allows you to pass parameters to build a request.
+    /// Perform request for Artist Releases
     ///
     /// # Examples
     ///
-    /// ```
+    /// ```rust,no_run
     /// use discogs::Discogs;
     ///
     /// let releases = Discogs::new("USER_AGENT")

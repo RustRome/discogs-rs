@@ -189,7 +189,7 @@ impl ReleaseQueryBuilder {
     ///
     /// # Examples
     ///
-    /// ```
+    /// ```rust,no_run
     /// use discogs::data_structures::ReleaseQueryBuilder;
     ///
     /// let rqb = ReleaseQueryBuilder::new(128,

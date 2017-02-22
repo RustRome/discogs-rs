@@ -7,8 +7,6 @@ The API is slowly becoming more stabilized and probably won't change very much.
 # Tasks to do before 1.0.0
  - [ ] Implement all the API
     - [ ] Database
-      - [ ] Label
-        - [ ] Get Releases
       - [ ] Release
         - [ ] Allow currency in requests
         - [ ] Community ratings
@@ -17,6 +15,8 @@ The API is slowly becoming more stabilized and probably won't change very much.
         - [ ] Delete Ratings by username
       - [ ] Master
         - [ ] Get Versions
+      - [x] Label
+        - [x] Get Releases
       - [x] Artist
         - [x] Get Releases
       - [x] Search

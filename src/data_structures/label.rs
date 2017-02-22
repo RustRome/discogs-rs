@@ -92,7 +92,7 @@ impl LabelQueryBuilder {
     ///
     /// let lqb = LabelQueryBuilder::new(4567,
     ///                                   discogs::API_URL.to_string(),
-    ///                                   env!("DISCOGS_USER_AGENT").to_string());
+    ///                                   "USER_AGENT".to_string().to_string());
     /// ```
     pub fn new(id: u32, api_endpoint: String, user_agent: String) -> LabelQueryBuilder {
         LabelQueryBuilder {
@@ -113,7 +113,7 @@ impl LabelQueryBuilder {
     ///
     /// let label = LabelQueryBuilder::new(4567,
     ///                                  discogs::API_URL.to_string(),
-    ///                                  env!("DISCOGS_USER_AGENT").to_string())
+    ///                                  "USER_AGENT".to_string().to_string())
     ///                                  .get();
     /// ```
     pub fn get(&self) -> Result<Label, QueryError> {
@@ -163,7 +163,7 @@ mod tests {
     use serde_json::to_string;
 
     fn lqb(id: u32) -> LabelQueryBuilder {
-        Discogs::new(env!("DISCOGS_USER_AGENT")).label(id)
+        Discogs::new("USER_AGENT").label(id)
     }
 
     #[test]
@@ -172,7 +172,7 @@ mod tests {
 
         assert_eq!(qb.id, 999);
         assert_eq!(qb.api_endpoint, API_URL.to_owned());
-        assert_eq!(qb.user_agent, env!("DISCOGS_USER_AGENT"));
+        assert_eq!(qb.user_agent, "USER_AGENT".to_string());
         assert!(qb.key.is_none());
         assert!(qb.secret.is_none());
     }
@@ -211,7 +211,7 @@ mod tests {
                 "name": "Skunkworks"
             })).unwrap().as_str())
             .create_for(|| {
-                let label = Discogs::new(env!("DISCOGS_USER_AGENT"))
+                let label = Discogs::new("USER_AGENT")
                     .label(1234)
                     .get()
                     .ok()

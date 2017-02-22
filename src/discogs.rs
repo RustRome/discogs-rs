@@ -50,7 +50,7 @@ impl Discogs {
     /// ```
     /// use discogs::Discogs;
     ///
-    /// let client = Discogs::new(env!("DISCOGS_USER_AGENT"));
+    /// let client = Discogs::new("USER_AGENT");
     /// ```
     pub fn new(user_agent: &str) -> Self {
         Discogs {
@@ -69,8 +69,8 @@ impl Discogs {
     /// ```
     /// use discogs::Discogs;
     ///
-    /// let mut client = Discogs::new(env!("DISCOGS_USER_AGENT"));
-    /// client.key(env!("DISCOGS_CLIENT_KEY"));
+    /// let mut client = Discogs::new("USER_AGENT");
+    /// client.key("CLIENT_KEY");
     /// ```
     //TODO: Come back and make a better example
     pub fn key(&mut self, key: &str) -> &mut Self {
@@ -85,8 +85,8 @@ impl Discogs {
     /// ```
     /// use discogs::Discogs;
     ///
-    /// let mut client = Discogs::new(env!("DISCOGS_USER_AGENT"));
-    /// client.secret(env!("DISCOGS_CLIENT_SECRET"));
+    /// let mut client = Discogs::new("USER_AGENT");
+    /// client.secret("CLIENT_STRING");
     /// ```
     //TODO: Come back and make a better example
     pub fn secret(&mut self, secret: &str) -> &mut Self {
@@ -102,7 +102,7 @@ impl Discogs {
     /// ```
     /// use discogs::Discogs;
     ///
-    /// let artist = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    /// let artist = Discogs::new("USER_AGENT")
     ///                       .artist(4567);
     /// ```
     pub fn artist(&mut self, id: u32) -> ArtistQueryBuilder {
@@ -119,7 +119,7 @@ impl Discogs {
     /// ```
     /// use discogs::Discogs;
     ///
-    /// let label = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    /// let label = Discogs::new("USER_AGENT")
     ///                       .label(1234);
     /// ```
     pub fn label(&mut self, id: u32) -> LabelQueryBuilder {
@@ -136,7 +136,7 @@ impl Discogs {
     /// ```
     /// use discogs::Discogs;
     ///
-    /// let release = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    /// let release = Discogs::new("USER_AGENT")
     ///                       .label(1234);
     /// ```
     pub fn release(&mut self, id: u32) -> ReleaseQueryBuilder {
@@ -153,7 +153,7 @@ impl Discogs {
     /// ```
     /// use discogs::Discogs;
     ///
-    /// let master = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    /// let master = Discogs::new("USER_AGENT")
     ///                       .master(1234);
     /// ```
     pub fn master(&mut self, id: u32) -> MasterQueryBuilder {
@@ -169,26 +169,26 @@ mod tests {
 
     #[test]
     fn user_agent_test() {
-        let client = Discogs::new(env!("DISCOGS_USER_AGENT"));
+        let client = Discogs::new("USER_AGENT");
 
-        assert_eq!(client.user_agent, env!("DISCOGS_USER_AGENT"));
+        assert_eq!(client.user_agent, "USER_AGENT".to_string());
     }
 
     #[test]
     fn key_test() {
-        let mut client = Discogs::new(env!("DISCOGS_USER_AGENT"));
-        client.key(env!("DISCOGS_CLIENT_KEY"));
+        let mut client = Discogs::new("USER_AGENT");
+        client.key("CLIENT_KEY");
 
-        assert_eq!(client.user_agent, env!("DISCOGS_USER_AGENT"));
-        assert_eq!(client.key, Some(env!("DISCOGS_CLIENT_KEY").to_owned()));
+        assert_eq!(client.user_agent, "USER_AGENT".to_string());
+        assert_eq!(client.key, Some("CLIENT_KEY".to_string()));
     }
 
     #[test]
     fn secret_test() {
-        let mut client = Discogs::new(env!("DISCOGS_USER_AGENT"));
-        client.secret(env!("DISCOGS_CLIENT_SECRET"));
+        let mut client = Discogs::new("USER_AGENT");
+        client.secret("CLIENT_STRING");
 
-        assert_eq!(client.user_agent, env!("DISCOGS_USER_AGENT"));
-        assert_eq!(client.secret, Some(env!("DISCOGS_CLIENT_SECRET").to_owned()));
+        assert_eq!(client.user_agent, "USER_AGENT".to_string());
+        assert_eq!(client.secret, Some("CLIENT_STRING".to_string()));
     }
 }

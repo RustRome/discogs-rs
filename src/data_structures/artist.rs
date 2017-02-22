@@ -121,7 +121,7 @@ impl ArtistQueryBuilder {
     ///
     /// let aqb = ArtistQueryBuilder::new(4567,
     ///                                   discogs::API_URL.to_string(),
-    ///                                   env!("DISCOGS_USER_AGENT").to_string());
+    ///                                   "USER_AGENT".to_string().to_string());
     /// ```
     pub fn new(id: u32, api_endpoint: String, user_agent: String) -> ArtistQueryBuilder {
         ArtistQueryBuilder {
@@ -145,7 +145,7 @@ impl ArtistQueryBuilder {
     ///
     /// let artist = ArtistQueryBuilder::new(4567,
     ///                                  discogs::API_URL.to_string(),
-    ///                                  env!("DISCOGS_USER_AGENT").to_string())
+    ///                                  "USER_AGENT".to_string().to_string())
     ///                                  .get();
     /// ```
     pub fn get(&self) -> Result<Artist, QueryError> {
@@ -180,7 +180,7 @@ impl ArtistQueryBuilder {
     /// ```
     /// use discogs::Discogs;
     ///
-    /// let releases = Discogs::new(env!("DISCOGS_USER_AGENT"))
+    /// let releases = Discogs::new("USER_AGENT")
     ///                       .artist(1234).get_releases();
     /// ```
     pub fn get_releases(&mut self) -> Result<ArtistReleases, QueryError> {
@@ -241,7 +241,7 @@ mod tests {
     use serde_json::to_string;
 
     fn aqb(id: u32) -> ArtistQueryBuilder {
-        Discogs::new(env!("DISCOGS_USER_AGENT")).artist(id)
+        Discogs::new("USER_AGENT").artist(id)
     }
 
     #[test]
@@ -250,7 +250,7 @@ mod tests {
 
         assert_eq!(qb.id, 789);
         assert_eq!(qb.api_endpoint, API_URL.to_owned());
-        assert_eq!(qb.user_agent, env!("DISCOGS_USER_AGENT"));
+        assert_eq!(qb.user_agent, "USER_AGENT".to_string());
         assert!(qb.key.is_none());
         assert!(qb.secret.is_none());
     }
@@ -289,7 +289,7 @@ mod tests {
                 "name": "Whirlpool Productions"
             })).unwrap().as_str())
             .create_for(|| {
-                let artist = Discogs::new(env!("DISCOGS_USER_AGENT"))
+                let artist = Discogs::new("USER_AGENT")
                     .artist(4567)
                     .get()
                     .ok()
@@ -346,7 +346,7 @@ mod tests {
             }
             )).unwrap().as_str())
             .create_for(|| {
-                let mut releases = Discogs::new(env!("DISCOGS_USER_AGENT"))
+                let mut releases = Discogs::new("USER_AGENT")
                     .artist(4567)
                     .pagination(1, 2)
                     .get_releases()

@@ -90,7 +90,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                   env!("DISCOGS_USER_AGENT").to_string());
+    ///                                   "USER_AGENT".to_string().to_string());
     /// ```
     pub fn new(api_endpoint: String, user_agent: String) -> SearchQueryBuilder {
         SearchQueryBuilder {
@@ -110,7 +110,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.query("query".to_string());
     /// ```
@@ -128,7 +128,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchType;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.search_type(SearchType::Artist);
     /// ```
@@ -146,7 +146,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.year("year".to_string());
     /// ```
@@ -163,7 +163,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.title("title".to_string());
     /// ```
@@ -180,7 +180,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.release_title("release_title".to_string());
     /// ```
@@ -197,7 +197,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.credit("credit".to_string());
     /// ```
@@ -214,7 +214,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.artist("artist".to_string());
     /// ```
@@ -231,7 +231,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.anv("anv".to_string());
     /// ```
@@ -248,7 +248,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.label("label".to_string());
     /// ```
@@ -265,7 +265,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.genre("genre".to_string());
     /// ```
@@ -282,7 +282,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.style("style".to_string());
     /// ```
@@ -299,7 +299,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.country("country".to_string());
     /// ```
@@ -315,7 +315,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.format("format".to_string());
     /// ```
@@ -332,7 +332,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.catno("catno".to_string());
     /// ```
@@ -349,7 +349,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.barcode("barcode".to_string());
     /// ```
@@ -366,7 +366,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.track("track".to_string());
     /// ```
@@ -383,7 +383,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.submitter("submitter".to_string());
     /// ```
@@ -400,7 +400,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string());
+    ///                                      "USER_AGENT".to_string().to_string());
     ///
     /// search.contributor("contributor".to_string());
     /// ```
@@ -417,7 +417,7 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
     /// let search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      env!("DISCOGS_USER_AGENT").to_string())
+    ///                                      "USER_AGENT".to_string().to_string())
     ///                                       .get();
     /// ```
     pub fn get(&self) -> Result<Vec<SearchResult>, QueryError> {

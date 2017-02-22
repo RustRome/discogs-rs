@@ -116,7 +116,7 @@ impl MasterQueryBuilder {
     ///
     /// let mqb = MasterQueryBuilder::new(7896,
     ///                                   discogs::API_URL.to_string(),
-    ///                                   env!("DISCOGS_USER_AGENT").to_string());
+    ///                                   "USER_AGENT".to_string().to_string());
     /// ```
     pub fn new(id: u32, api_endpoint: String, user_agent: String) -> MasterQueryBuilder {
         MasterQueryBuilder {
@@ -137,7 +137,7 @@ impl MasterQueryBuilder {
     ///
     /// let master = MasterQueryBuilder::new(7896,
     ///                                  discogs::API_URL.to_string(),
-    ///                                  env!("DISCOGS_USER_AGENT").to_string())
+    ///                                  "USER_AGENT".to_string().to_string())
     ///                                  .get();
     /// ```
     pub fn get(&self) -> Result<Master, QueryError> {
@@ -187,7 +187,7 @@ mod tests {
     use serde_json::to_string;
 
     fn mqb(id: u32) -> MasterQueryBuilder {
-        Discogs::new(env!("DISCOGS_USER_AGENT")).master(id)
+        Discogs::new("USER_AGENT").master(id)
     }
 
     #[test]
@@ -196,7 +196,7 @@ mod tests {
 
         assert_eq!(qb.id, 789);
         assert_eq!(qb.api_endpoint, API_URL.to_owned());
-        assert_eq!(qb.user_agent, env!("DISCOGS_USER_AGENT"));
+        assert_eq!(qb.user_agent, "USER_AGENT".to_string());
         assert!(qb.key.is_none());
         assert!(qb.secret.is_none());
     }
@@ -240,7 +240,7 @@ mod tests {
                 "main_release_url": "main_release_url",
             })).unwrap().as_str())
         .create_for(|| {
-            let master = Discogs::new(env!("DISCOGS_USER_AGENT"))
+            let master = Discogs::new("USER_AGENT")
                 .master(7896)
                 .get()
                 .ok()

@@ -31,5 +31,5 @@ build: false
 
 test_script:
     - cargo build
-    - IF DEFINED APPVEYOR_PULL_REQUEST_NUMBER - cargo test --test real_world_tests
-    - IF NOT DEFINED APPVEYOR_PULL_REQUEST_NUMBER - cargo test --no-run
+    - IF DEFINED APPVEYOR_PULL_REQUEST_NUMBER cargo test --test real_world_tests
+    - IF NOT DEFINED APPVEYOR_PULL_REQUEST_NUMBER cargo test --no-run

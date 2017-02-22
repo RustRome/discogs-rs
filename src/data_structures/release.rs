@@ -168,8 +168,8 @@ impl ReleaseQueryBuilder {
     /// let rqb = ReleaseQueryBuilder::new(128,
     ///                                   discogs::API_URL.to_string(),
     ///                                   "USER_AGENT".to_string(),
-    ///                                   "CLIENT_KEY".to_string(),
-    ///                                   "CLIENT_SECRET".to_string());
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     /// ```
     pub fn new(id: u32,
                api_endpoint: String,
@@ -192,10 +192,12 @@ impl ReleaseQueryBuilder {
     /// ```
     /// use discogs::data_structures::ReleaseQueryBuilder;
     ///
-    /// let release = ReleaseQueryBuilder::new(128,
-    ///                                  discogs::API_URL.to_string(),
-    ///                                  "USER_AGENT".to_string())
-    ///                                  .get();
+    /// let rqb = ReleaseQueryBuilder::new(128,
+    ///                                   discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()))
+    ///                                    .get();
     /// ```
     pub fn get(&self) -> Result<Release, QueryError> {
         let result: Result<String, QueryError> = self.perform_request();

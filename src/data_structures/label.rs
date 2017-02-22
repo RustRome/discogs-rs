@@ -93,8 +93,8 @@ impl LabelQueryBuilder {
     /// let lqb = LabelQueryBuilder::new(4567,
     ///                                   discogs::API_URL.to_string(),
     ///                                   "USER_AGENT".to_string(),
-    ///                                   "CLIENT_KEY".to_string(),
-    ///                                   "CLIENT_SECRET".to_string());
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     /// ```
     pub fn new(id: u32,
                api_endpoint: String,
@@ -115,12 +115,11 @@ impl LabelQueryBuilder {
     /// # Examples
     ///
     /// ```
-    /// use discogs::data_structures::LabelQueryBuilder;
+    /// use discogs::Discogs;
     ///
-    /// let label = LabelQueryBuilder::new(4567,
-    ///                                  discogs::API_URL.to_string(),
-    ///                                  "USER_AGENT".to_string())
-    ///                                  .get();
+    /// let label = Discogs::new("USER_AGENT")
+    ///                       .label(1234)
+    ///                       .get();
     /// ```
     pub fn get(&self) -> Result<Label, QueryError> {
         let result: Result<String, QueryError> = self.perform_request();

@@ -117,8 +117,8 @@ impl MasterQueryBuilder {
     /// let mqb = MasterQueryBuilder::new(7896,
     ///                                   discogs::API_URL.to_string(),
     ///                                   "USER_AGENT".to_string(),
-    ///                                   "CLIENT_KEY".to_string(),
-    ///                                   "CLIENT_SECRET".to_string());
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     /// ```
     pub fn new(id: u32,
                api_endpoint: String,
@@ -142,8 +142,10 @@ impl MasterQueryBuilder {
     /// use discogs::data_structures::MasterQueryBuilder;
     ///
     /// let master = MasterQueryBuilder::new(7896,
-    ///                                  discogs::API_URL.to_string(),
-    ///                                  "USER_AGENT".to_string())
+    ///                                   discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()))
     ///                                  .get();
     /// ```
     pub fn get(&self) -> Result<Master, QueryError> {

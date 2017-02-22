@@ -91,8 +91,8 @@ impl SearchQueryBuilder {
     ///
     /// let sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
     ///                                   "USER_AGENT".to_string(),
-    ///                                   "CLIENT_KEY".to_string(),
-    ///                                   "CLIENT_SECRET".to_string());
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     /// ```
     pub fn new(api_endpoint: String,
                user_agent: String,
@@ -114,10 +114,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.query("query".to_string());
+    /// sqb.query("query".to_string());
     /// ```
     pub fn query(&mut self, query: String) -> &mut Self {
         self.parameters.insert("query".to_string(), query);
@@ -132,10 +134,12 @@ impl SearchQueryBuilder {
     /// use discogs::data_structures::SearchQueryBuilder;
     /// use discogs::data_structures::SearchType;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.search_type(SearchType::Artist);
+    /// sqb.search_type(SearchType::Artist);
     /// ```
     pub fn search_type(&mut self, search_type: SearchType) -> &mut Self {
         self.parameters.insert("search_type".to_string(), search_type.to_string());
@@ -150,10 +154,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.year(1980);
+    /// sqb.year(1980);
     /// ```
     pub fn year(&mut self, year: i32) -> &mut Self {
         self.parameters.insert("year".to_string(), year.to_string());
@@ -167,10 +173,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.title("title".to_string());
+    /// sqb.title("title".to_string());
     /// ```
     pub fn title(&mut self, title: String) -> &mut Self {
         self.parameters.insert("title".to_string(), title);
@@ -184,10 +192,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.release_title("release_title".to_string());
+    /// sqb.release_title("release_title".to_string());
     /// ```
     pub fn release_title(&mut self, release_title: String) -> &mut Self {
         self.parameters.insert("release_title".to_string(), release_title);
@@ -201,10 +211,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.credit("credit".to_string());
+    /// sqb.credit("credit".to_string());
     /// ```
     pub fn credit(&mut self, credit: String) -> &mut Self {
         self.parameters.insert("credit".to_string(), credit);
@@ -218,10 +230,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.artist("artist".to_string());
+    /// sqb.artist("artist".to_string());
     /// ```
     pub fn artist(&mut self, artist: String) -> &mut Self {
         self.parameters.insert("artist".to_string(), artist);
@@ -235,10 +249,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.anv("anv".to_string());
+    /// sqb.anv("anv".to_string());
     /// ```
     pub fn anv(&mut self, anv: String) -> &mut Self {
         self.parameters.insert("anv".to_string(), anv);
@@ -252,10 +268,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.label("label".to_string());
+    /// sqb.label("label".to_string());
     /// ```
     pub fn label(&mut self, label: String) -> &mut Self {
         self.parameters.insert("label".to_string(), label);
@@ -269,10 +287,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.genre("genre".to_string());
+    /// sqb.genre("genre".to_string());
     /// ```
     pub fn genre(&mut self, genre: String) -> &mut Self {
         self.parameters.insert("genre".to_string(), genre);
@@ -286,10 +306,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.style("style".to_string());
+    /// sqb.style("style".to_string());
     /// ```
     pub fn style(&mut self, style: String) -> &mut Self {
         self.parameters.insert("style".to_string(), style);
@@ -303,10 +325,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.country("country".to_string());
+    /// sqb.country("country".to_string());
     /// ```
     pub fn country(&mut self, country: String) -> &mut Self {
         self.parameters.insert("country".to_string(), country);
@@ -319,10 +343,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.format("format".to_string());
+    /// sqb.format("format".to_string());
     /// ```
     pub fn format(&mut self, format: String) -> &mut Self {
         self.parameters.insert("format".to_string(), format);
@@ -336,10 +362,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.catno("catno".to_string());
+    /// sqb.catno("catno".to_string());
     /// ```
     pub fn catno(&mut self, catno: String) -> &mut Self {
         self.parameters.insert("catno".to_string(), catno);
@@ -353,10 +381,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.barcode("barcode".to_string());
+    /// sqb.barcode("barcode".to_string());
     /// ```
     pub fn barcode(&mut self, barcode: String) -> &mut Self {
         self.parameters.insert("barcode".to_string(), barcode);
@@ -370,10 +400,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.track("track".to_string());
+    /// sqb.track("track".to_string());
     /// ```
     pub fn track(&mut self, track: String) -> &mut Self {
         self.parameters.insert("track".to_string(), track);
@@ -387,10 +419,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.submitter("submitter".to_string());
+    /// sqb.submitter("submitter".to_string());
     /// ```
     pub fn submitter(&mut self, submitter: String) -> &mut Self {
         self.parameters.insert("submitter".to_string(), submitter);
@@ -404,10 +438,12 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string());
+    /// let mut sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     ///
-    /// search.contributor("contributor".to_string());
+    /// sqb.contributor("contributor".to_string());
     /// ```
     pub fn contributor(&mut self, contributor: String) -> &mut Self {
         self.parameters.insert("contributor".to_string(), contributor);
@@ -421,8 +457,10 @@ impl SearchQueryBuilder {
     /// ```
     /// use discogs::data_structures::SearchQueryBuilder;
     ///
-    /// let search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
-    ///                                      "USER_AGENT".to_string())
+    /// let sqb = SearchQueryBuilder::new(discogs::API_URL.to_string(),
+    ///                                   "USER_AGENT".to_string(),
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()))
     ///                                       .get();
     /// ```
     pub fn get(&self) -> Result<Vec<SearchResult>, QueryError> {

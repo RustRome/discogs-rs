@@ -122,8 +122,8 @@ impl ArtistQueryBuilder {
     /// let aqb = ArtistQueryBuilder::new(4567,
     ///                                   discogs::API_URL.to_string(),
     ///                                   "USER_AGENT".to_string(),
-    ///                                   "CLIENT_KEY".to_string(),
-    ///                                   "CLIENT_SECRET.to_string()");
+    ///                                   Some("CLIENT_KEY".to_string()),
+    ///                                   Some("CLIENT_SECRET".to_string()));
     /// ```
     pub fn new(id: u32,
                api_endpoint: String,
@@ -147,12 +147,11 @@ impl ArtistQueryBuilder {
     /// # Examples
     ///
     /// ```
-    /// use discogs::data_structures::ArtistQueryBuilder;
+    /// use discogs::Discogs;
     ///
-    /// let artist = ArtistQueryBuilder::new(4567,
-    ///                                  discogs::API_URL.to_string(),
-    ///                                  "USER_AGENT".to_string())
-    ///                                  .get();
+    /// let releases = Discogs::new("USER_AGENT")
+    ///                       .artist(1234)
+    ///                       .get();
     /// ```
     pub fn get(&self) -> Result<Artist, QueryError> {
         let result: Result<String, QueryError> = self.perform_request();

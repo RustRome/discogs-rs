@@ -178,8 +178,7 @@ impl Discogs {
     /// ```
     /// use discogs::Discogs;
     ///
-    /// let search = Discogs::new("USER_AGENT")
-    ///                       .search(1234);
+    /// let search = Discogs::new("USER_AGENT").search();
     /// ```
     pub fn search(&mut self) -> SearchQueryBuilder {
         SearchQueryBuilder::new(self.api_endpoint.clone(),

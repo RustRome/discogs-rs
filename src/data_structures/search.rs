@@ -148,10 +148,10 @@ impl SearchQueryBuilder {
     /// let mut search = SearchQueryBuilder::new(discogs::API_URL.to_string(),
     ///                                      "USER_AGENT".to_string().to_string());
     ///
-    /// search.year("year".to_string());
+    /// search.year(1980);
     /// ```
-    pub fn year(&mut self, year: String) -> &mut Self {
-        self.parameters.insert("year".to_string(), year);
+    pub fn year(&mut self, year: i32) -> &mut Self {
+        self.parameters.insert("year".to_string(), year.to_string());
         self
     }
 

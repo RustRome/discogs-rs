@@ -29,6 +29,27 @@ fn build_discogs() -> Discogs {
 }
 
 #[test]
+fn test_search() {
+    let mut client = build_discogs();
+
+    let search_res = client.search()
+                           .query("Na Wyspach Dni".to_string())
+                           .year(1980)
+                           .get();
+
+    match search_res {
+        Ok(search_ok) => {
+            println!("{:?}", search_ok);
+        },
+        Err(search_err) => {
+            println!("{:?}", search_err);
+            panic!();
+        }
+    }
+}
+
+
+#[test]
 fn test_request_artist() {
     let mut client = build_discogs();
 
@@ -37,6 +58,7 @@ fn test_request_artist() {
     match artist_res {
         Ok(artist_ok) => {
             println!("{:?}", artist_ok);
+            // TODO: Make some checks here
         },
         Err(artist_err) => {
             println!("{:?}", artist_err);

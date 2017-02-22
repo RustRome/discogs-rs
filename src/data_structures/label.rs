@@ -174,8 +174,8 @@ impl LabelQueryBuilder {
             let result_string = result.ok().unwrap();
             let json = serde_json::from_str(&result_string);
 
-            if let Ok(artist) = json {
-                return Ok(artist);
+            if let Ok(label) = json {
+                return Ok(label);
             } else {
                 return Err(QueryError::JsonDecodeError {
                     serde_err: json.err()

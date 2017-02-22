@@ -161,6 +161,22 @@ impl Discogs {
                                  self.api_endpoint.clone(),
                                  self.user_agent.clone())
     }
+
+    /// Returns an instance of the `SearchQueryBuilder` structure.
+    /// This allows you to pass parameters to build a request.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use discogs::Discogs;
+    ///
+    /// let search = Discogs::new("USER_AGENT")
+    ///                       .search(1234);
+    /// ```
+    pub fn search(&mut self) -> SearchQueryBuilder {
+        SearchQueryBuilder::new(self.api_endpoint.clone(),
+                                 self.user_agent.clone())
+    }
 }
 
 #[cfg(test)]

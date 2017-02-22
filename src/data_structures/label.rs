@@ -80,6 +80,9 @@ pub struct LabelQueryBuilder {
     // Optional key and secret if necessary
     key: Option<String>,
     secret: Option<String>,
+    page: i16,
+    per_page: i16,
+    releases : bool
 }
 
 impl LabelQueryBuilder {
@@ -106,7 +109,10 @@ impl LabelQueryBuilder {
             api_endpoint: api_endpoint,
             user_agent: user_agent,
             key: key,
-            secret:secret
+            secret:secret,
+            page  : 1,
+            per_page : 50,
+            releases : false
         }
     }
 
@@ -140,6 +146,44 @@ impl LabelQueryBuilder {
             }
         }
     }
+
+    pub fn pagination(&mut self, page: i16, per_page: i16) -> &mut LabelQueryBuilder {
+        self.page = page;
+        self.per_page = per_page;
+        self
+    }
+    /// Perform request for Label Releases
+    ///
+    /// # Examples
+    ///
+    /// ```rust,no_run
+    /// use discogs::Discogs;
+    ///
+    /// let releases = Discogs::new("USER_AGENT")
+    ///                       .label(4567)
+    ///                       .get_releases();
+    /// ```
+    pub fn get_releases(&mut self) -> Result<ArtistReleases, QueryError> {
+
+        self.releases = true;
+
+        let result: Result<String, QueryError> = self.perform_request();
+
+        if let Err(error) = result {
+            return Err(error);
+        } else {
+            let result_string = result.ok().unwrap();
+            let json = serde_json::from_str(&result_string);
+
+            if let Ok(artist) = json {
+                return Ok(artist);
+            } else {
+                return Err(QueryError::JsonDecodeError {
+                    serde_err: json.err()
+                });
+            }
+        }
+    }
 }
 
 impl QueryBuilder for LabelQueryBuilder {
@@ -152,7 +196,10 @@ impl QueryBuilder for LabelQueryBuilder {
     }
 
     fn get_query_url(&self) -> String {
-        format!("{}{}/{}", self.api_endpoint, LABEL_ENDPOINT, self.id)
+        match self.releases {
+            false => format!("{}{}/{}", self.api_endpoint, LABEL_ENDPOINT, self.id),
+            true => format!("{}{}/{}/releases?page={}&per_page={}", self.api_endpoint, LABEL_ENDPOINT, self.id, self.page, self.per_page)
+        }
     }
 
     fn get_user_agent(&self) -> String {
@@ -226,6 +273,74 @@ mod tests {
                 assert_eq!(label.id, 1234);
                 assert_eq!(label.resource_url, "https://api.discogs.com/labels/1234".to_string());
                 assert_eq!(label.name, "Skunkworks".to_string());
+            });
+    }
+
+    #[test]
+    fn test_perform_label_releases_request() {
+        mock("GET", "/labels/4567/releases?page=1&per_page=2")
+            .with_status(200)
+            .with_header("content-type", "text/json")
+            .with_body(to_string(&json!(
+            {
+                "pagination": {
+                    "per_page": 2,
+                    "items": 9,
+                    "page": 1,
+                    "urls": {
+                        "last": "https://api.discogs.com/labels/4567/releases?per_page=2&page=5",
+                        "next": "https://api.discogs.com/labels/4567/releases?per_page=2&page=2"
+                    },
+                    "pages": 5
+                },
+                "releases": [{
+                    "status": "Accepted",
+                    "thumb": "",
+                    "format": "LP, TP, W/Lbl",
+                    "title": "Split",
+                    "catno": "F01",
+                    "year": 2001,
+                    "resource_url": "https://api.discogs.com/releases/1166635",
+                    "artist": "Magmax / Des Esseintes",
+                    "id": 1166635
+                }, {
+                    "status": "Accepted",
+                    "thumb": "",
+                    "format": "LP, Ltd",
+                    "title": "Split",
+                    "catno": "F01",
+                    "year": 2001,
+                    "resource_url": "https://api.discogs.com/releases/324223",
+                    "artist": "Magmax / Des Esseintes",
+                    "id": 324223
+                }]
+            }
+            )).unwrap().as_str())
+            .create_for(|| {
+                let mut releases = Discogs::new("USER_AGENT")
+                    .label(4567)
+                    .pagination(1, 2)
+                    .get_releases()
+                    .ok()
+                    .unwrap();
+
+
+
+                assert_eq!(releases.pagination.page,1);
+                assert_eq!(releases.pagination.per_page,2);
+                assert_eq!(releases.pagination.items,9);
+                assert_eq!(releases.pagination.pages,5);
+
+
+                assert_eq!(releases.releases.len(), 2);
+
+                assert_eq!(releases.releases[0].title, "Split");
+                assert_eq!(releases.releases[0].id, 1166635);
+                assert_eq!(releases.releases[0].year, 2001);
+                assert_eq!(releases.releases[0].resource_url, "https://api.discogs.com/releases/1166635");
+                assert_eq!(releases.releases[0].artist, Some(String::from("Magmax / Des Esseintes")));
+
+
             });
     }
 }

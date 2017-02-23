@@ -153,3 +153,32 @@ mod tests {
         assert_eq!(auth.0.secret, Some("sesame".to_string()));
     }
 }
+
+//bench_header!(discogs_ks_bench,
+//              Authorization<DiscogsKSAuth>,
+//              { vec![b"Discogs key=Aladdin secret=sesame".to_vec()] });
+
+#[cfg(all(test, feature = "nightly"))]
+mod discogs_ks_bench {
+    use test::Bencher;
+    use super::*;
+
+    use hyper::header::*;
+
+    #[bench]
+    fn bench_parse(b: &mut Bencher) {
+        let val = &[b"Discogs key=Aladdin secret=sesame".to_vec()];
+        b.iter(|| {
+            let _: Authorization<DiscogsKSAuth> = Header::parse_header(val).unwrap();
+        });
+    }
+
+    //#[bench]
+    //fn bench_format(b: &mut Bencher) {
+    //    let raw = &[b"Discogs key=Aladdin secret=sesame".to_vec()];
+    //    let val: Authorization<DiscogsKSAuth> = Header::parse_header(raw).unwrap();
+    //    b.iter(|| {
+    //        format!("{}", val);
+    //    });
+    //}
+}

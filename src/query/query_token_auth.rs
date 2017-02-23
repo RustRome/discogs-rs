@@ -85,3 +85,27 @@ mod tests {
     }
 }
 
+#[cfg(all(test, feature = "nightly"))]
+mod discogs_ks_bench {
+    use test::Bencher;
+    use super::*;
+
+    use hyper::header::*;
+
+    #[bench]
+    fn bench_parse(b: &mut Bencher) {
+        let val = &[b"Discogs token=fghcvkbaskj,dabsd".to_vec()];
+        b.iter(|| {
+            let _: Authorization<DiscogsTokenAuth> = Header::parse_header(val).unwrap();
+        });
+    }
+
+    //#[bench]
+    //fn bench_format(b: &mut Bencher) {
+    //    let raw = &[b"Discogs key=Aladdin secret=sesame".to_vec()];
+    //    let val: Authorization<DiscogsKSAuth> = Header::parse_header(raw).unwrap();
+    //    b.iter(|| {
+    //        format!("{}", val);
+    //    });
+    //}
+}

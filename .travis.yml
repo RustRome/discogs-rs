@@ -29,7 +29,6 @@ addons:
       - libelf-dev
       - libdw-dev
 
-
 after_success:
   - if [ $TRAVIS_RUST_VERSION = stable ]; then
         wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz;
@@ -39,7 +38,7 @@ after_success:
         cmake ..;
         make;
         make install DESTDIR=../tmp;
-        cd ../.;
+        cd ../..;
         ls target/debug;
         ./kcov-master/tmp/usr/local/bin/kcov --coveralls-id=$TRAVIS_JOB_ID --exclude-pattern=/.cargo target/kcov target/debug/discogs-*
 

@@ -3,7 +3,7 @@ matrix:
     fast_finish: true
     include:
     - rust: nightly
-      env: FEATURES="--features nightly"
+      env: TRAVIS_CARGO_NIGHTLY_FEATURE="nightly"
     - rust: beta
     - rust: stable
 addons:
@@ -21,18 +21,15 @@ before_script:
 script:
     - cargo build --verbose
     - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-           travis-cargo test -- --verbose --lib $FEATURES &&
-           travis-cargo test -- --verbose --doc $FEATURES;
+           travis-cargo test -- --lib &&
+           travis-cargo test -- --doc;
       fi
 
     - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-           travis-cargo test -- --verbose $FEATURES;
+           travis-cargo test;
       fi
 
-    - if [ $TRAVIS_RUST_VERSION = nightly ]; then
-          travis-cargo bench -- $FEATURES;
-      fi
-
+    - travis-cargo bench;
     - travis-cargo --only stable doc
 
 after_success:

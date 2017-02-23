@@ -1,20 +1,32 @@
 language: rust
-rust:
-  - stable
-  - beta
-  - nightly
 os:
   - linux
 
-script:
-  - cargo build --verbose
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then cargo test --verbose --lib; fi'
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then cargo test --verbose --doc; fi'
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then cargo test --verbose; fi'
 
 
 matrix:
   fast_finish: true
+  include:
+    - rust: nightly
+      env: FEATURES="--features nightly"
+    - rust: beta
+    - rust: stable
+
+script:
+  - cargo build --verbose
+  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+        cargo test --verbose --lib $FEATURES &&
+        cargo test --verbose --doc $FEATURES;
+    fi
+
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
+         cargo test --verbose $FEATURES;
+    fi
+
+  - if [ $TRAVIS_RUST_VERSION = nightly ]; then
+         cargo bench $FEATURES;
+    fi
+
 env:
   global:
     - RUST_THREADS: 1

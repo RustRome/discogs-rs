@@ -22,6 +22,29 @@ script:
                  cargo bench $FEATURES;
         fi
 
+addons:
+  apt:
+    packages:
+      - libcurl4-openssl-dev
+      - libelf-dev
+      - libdw-dev
+
+
+after_success:
+  - if [ $TRAVIS_RUST_VERSION = stable ]; then
+        wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz;
+        tar xzf master.tar.gz;
+        mkdir kcov-master/build;
+        cd kcov-master/build;
+        cmake ..;
+        make;
+        make install DESTDIR=../tmp;
+        cd ../.;
+        ls target/debug;
+        ./kcov-master/tmp/usr/local/bin/kcov --coveralls-id=$TRAVIS_JOB_ID --exclude-pattern=/.cargo target/kcov target/debug/discogs-*
+
+    fi
+
 env:
     global:
         - secure: fJPG5Ssu91iymoWgrphYePS+/S8DRuigKrcdhCKNFE5PS5xzz7jZenj187AhuXRNdOZWSGTMouR4kLHK6b1LHWZO12FbhJSkgj4DwfwUVyAT8UNYmhMZjP5lyxjvNkYO0qmbM0vqk+JUBmLJ5QM5e32kZJHSox13YFWHB7BzfABLfxaWG7AO044g6K1u327w/Vpp0n9izm1yP7TUs7BJMg0Y6URt/wKfH/T+r2H+9jJ8ixK25+66UsJCeV6dAHQJ3A3JJkrklRDcsbK5WoH4Jns7uGToexj73rGscDOiHvwQTITlkGcZ2vvLNv9qIJJFnLvfrgNiu57bL2TGNM8uiX52rkGpuTGU6RV8xxBfPNT7Zaxiu9aydXFH2gM20V7s8OgQytDnUtriJnozmr35gWgeLlYgm2buIkFigMVQSbj+oQEMEp8K9mA0iBMkewyYVbw04D1bvSBtyqOLSKNZbb21WAw2sSgyEe/O4RoDlCp70uEgufT6+VcK/a8hwigJoVCVMKSUsAydYOERXSYWZzCQvPV5penCys2XLk1lGCxm1rxhgcP7c5ywIq4X60u9DOSLOHGNT44ChBjbroyPX6b5DV/PKWqEKpV4hK2PQXvuMTm9dOBm7LFSYyAftiOCLOFMy5fgd7PA+aO/PbnoVp/CAZwUqWenfd0n3fB96+k=
